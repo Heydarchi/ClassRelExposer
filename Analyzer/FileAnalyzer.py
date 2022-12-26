@@ -1,6 +1,6 @@
 import re
-
-class FileAnalyzer():
+from AbstractAnalyzer import * 
+class FileAnalyzer(AbstractAnalyzer):
     def __init__(self) -> None:
         pass
 
