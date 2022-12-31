@@ -51,7 +51,7 @@ public interface CarDeviceProvisionedController extends DeviceProvisionedControl
 //lkhjhgjhhggfdfd
 
 
-public class TestClass implements Haha
+public static class TestClass implements Haha
 {
 
 }

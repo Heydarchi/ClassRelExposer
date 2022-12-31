@@ -49,7 +49,7 @@ public class CarDeviceProvisionedControllerImpl extends DeviceProvisionedControl
         CarDeviceProvisionedController {
     private final Uri mUserSetupInProgressUri;
     private final ContentObserver mCarSettingsObserver;
-    private final Handler mMainHandler;
+    private final Test::Handler mMainHandler;
     private final SecureSettings mSecureSettings;
     private final AtomicBoolean mInitted = new AtomicBoolean(false);
 

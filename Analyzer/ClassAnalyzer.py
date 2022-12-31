@@ -14,7 +14,7 @@ class ClassAnalyzer(AbstractAnalyzer):
 
     def initPatterns(self):
         self.pattern["cpp"]=("(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?(class)\\s+[a-zA-Z0-9_\\s]*[:{;]")
-        self.pattern["java"]=["(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?(public|private)?\\s+(static)?\\s?((class|interface|implements|extends)\\s+[a-zA-Z0-9_\\s]*)+[:{;]"]
+        self.pattern["java"]=["(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface|implements|extends)\\s+[a-zA-Z0-9_\\s]*)+[:{;]"]
 
         self.classNamePattern["cpp"]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
         self.classNamePattern["java"]=("(class|interface)\\s+([a-zA-Z0-9_])+\\s+")
