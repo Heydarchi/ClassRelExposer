@@ -1,6 +1,7 @@
 import sys
 import re
 from AbstractAnalyzer import * 
+from AnalyzerEntities import *
 from PythonUtilityClasses import FileReader as FR
 
 class ClassAnalyzer(AbstractAnalyzer):
@@ -30,19 +31,23 @@ class ClassAnalyzer(AbstractAnalyzer):
         fileReader = FR.FileReader()
         fileContent= fileReader.readFile(filePath)
         #print( str(fileContent).rstrip()) 
+        listOfClasses = list()
         for pattern in self.pattern[lang]:
             tempContent = fileContent
             #print ("\nregx: ", pattern)
             match = re.search(pattern, tempContent)
             while match != None: 
+                classInfo = ClassNode()
                 print("-------Match at begin % s, end % s " % (match.start(), match.end()),tempContent[match.start():match.end()])
-                className = self.extractClassName(lang, tempContent[match.start():match.end()])
-                print("====> Class/Interface name: ",className)
-                classExtendName, classImplementName = self.extractClassInheritances(lang, tempContent[match.start():match.end()])
-                print("====> classExtendName: ", classExtendName, "      classImplementName: ", classImplementName)
+                classInfo.name = self.extractClassName(lang, tempContent[match.start():match.end()])
+                print("====> Class/Interface name: ",classInfo.name)
+                classInfo.relations = self.extractClassInheritances(lang, tempContent[match.start():match.end()])
+                print("====> classInfo.relations: ", classInfo.relations)
+                classInfo = self.extractClassSpec(tempContent[match.start():match.end()], classInfo)
+                listOfClasses.append( classInfo )
                 tempContent = tempContent[match.end():]
                 match = re.search(pattern, tempContent)
-
+        print( listOfClasses )
     def extractClassName(self, lang, inputStr):
             match = re.search(self.classNamePattern[lang], inputStr)
             if match != None: 
@@ -52,19 +57,41 @@ class ClassAnalyzer(AbstractAnalyzer):
                 return None
 
     def extractClassInheritances(self, lang, inputStr):
-            classExtendName = None
+            inheritance = list()
             match = re.search(self.classExtendPattern[lang], inputStr)
-            if match != None: 
+            if match != None:
                 #print("classExtendName: ", " ".join(inputStr[match.start():match.end()].replace("\n"," ").split()).strip())
-                classExtendName = " ".join(inputStr[match.start():match.end()].replace("\n"," ").split()).strip().split(" ")[1]
+                inherit = Inheritance(name = " ".join(inputStr[match.start():match.end()].replace("\n"," ").split()).strip().split(" ")[1],
+                    relationship = InheritanceEnum.EXTENDED)
+                inheritance.append(inherit) 
 
             classImplementName = None
             match = re.search(self.classImplementPattern[lang], inputStr)
             if match != None: 
                 #print("classImplementName: ", " ".join(inputStr[match.start():match.end()].replace("\n"," ").split()).strip())
-                classImplementName = " ".join(inputStr[match.start():match.end()].replace("\n"," ").split()).strip().split(" ")[1]
+                inherit = Inheritance(name = " ".join(inputStr[match.start():match.end()].replace("\n"," ").split()).strip().split(" ")[1],
+                    relationship = InheritanceEnum.IMPLEMENTED)
+                inheritance.append(inherit)
 
-            return classExtendName, classImplementName
+            return inheritance
+
+
+    def extractClassSpec(self, inputStr: str, classInfo: ClassNode):
+        splittedStr = inputStr.split()
+        if "privat" in splittedStr :
+            classInfo.accessLevel = AccessEnum.PRIVATE
+        elif "protected" in splittedStr:
+            classInfo.accessLevel = AccessEnum.PROTECTED
+        else:
+            classInfo.accessLevel = AccessEnum.PUBLIC
+
+        if "final" in splittedStr:
+            classInfo.isFinal = True
+                    
+        if "interface" in splittedStr:
+            classInfo.isInterface = True
+
+        return classInfo
 
 if __name__ == "__main__" :
     print(sys.argv)

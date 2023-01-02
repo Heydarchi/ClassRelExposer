@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 from enum import Enum
 
@@ -21,21 +21,23 @@ class InheritanceEnum(Enum):
     IMPLEMENTED = 2
     DEPENDED = 3
 
+class AccessEnum(Enum):
+    PUBLIC = 1
+    PRIVATE = 2
+    PROTECTED = 3
+
 @dataclass
 class Inheritance:
-    name: str
+    name: str 
     relationship: InheritanceEnum    
 
 @dataclass
-
-@dataclass
 class ClassNode:
-    name: str
-    dataType: str
-    accessLevel: str
-    isStatic: bool
-    isFinal: bool
-    isInterface: bool
-    variables: List[VariableNode]
-    methods: List[MethodNode]
-    relations: List[Inheritance]
+    name: str = ""
+    accessLevel: AccessEnum = AccessEnum.PUBLIC 
+    isStatic: bool = False
+    isFinal: bool = False
+    isInterface: bool = False
+    variables: List[VariableNode] = field(default_factory=list)
+    methods: List[MethodNode] = field(default_factory=list)
+    relations: List[Inheritance] = field(default_factory=list)
