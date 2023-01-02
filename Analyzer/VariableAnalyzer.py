@@ -3,6 +3,7 @@ from pathlib import Path
 
 import re
 from AbstractAnalyzer import * 
+from AnalyzerEntities import *
 from PythonUtilityClasses import FileReader as FR
 class VariableAnalyzer(AbstractAnalyzer):
     def __init__(self) -> None:
@@ -11,8 +12,8 @@ class VariableAnalyzer(AbstractAnalyzer):
         self.initPatterns()
 
     def initPatterns(self):
-        self.pattern["cpp"]=("[\\s;\\n{}(::)]([a-zA-Z0-9_<>])+\\s+(\\*)?\\s?[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?[;=]")
-        self.pattern["java"]=("[\\s;\\n{}}][(public|private)\\s+|(static)\\s+|(final)\\s+].*(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+(\\*)?\\s?[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?[;=]")
+        self.pattern[FileTypeEnum.CPP]=("[\\s;\\n{}(::)]([a-zA-Z0-9_<>])+\\s+(\\*)?\\s?[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?[;=]")
+        self.pattern[FileTypeEnum.JAVA]=("[\\s;\\n{}}][(public|private)\\s+|(static)\\s+|(final)\\s+].*(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+(\\*)?\\s?[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?[;=]")
 
 
     def analyze(self, filePath, lang):
@@ -31,5 +32,5 @@ class VariableAnalyzer(AbstractAnalyzer):
 if __name__ == "__main__" :
     print(sys.argv)
     vriableAnalyzer = VariableAnalyzer()
-    vriableAnalyzer.analyze(sys.argv[1], "java")
+    vriableAnalyzer.analyze(sys.argv[1], FileTypeEnum.JAVA)
 

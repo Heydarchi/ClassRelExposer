@@ -11,31 +11,39 @@ class CommentAnalyzer(AbstractAnalyzer):
         self.initPatterns()
 
     def initPatterns(self):
-        self.pattern["cpp"]=["(\\/\\/).*", "(\\/\\*).*([a-zA-Z0-9\\s]*|\\r|\\n).*(\\*\\/)", "(\\\").*[\\r\\na-zA-Z0-9\\s].*(\\\")"]
-        self.pattern["java"]=["(\\/\\/).*", "(\\/\\*).*([a-zA-Z0-9\\s]*|\\r|\\n).*(\\*\\/)", "(\\\").*[\\r\\na-zA-Z0-9\\s].*(\\\")"]
+        self.pattern[FileTypeEnum.CPP]=["//", "*/"]
+        self.pattern[FileTypeEnum.JAVA]=["//", "*/"]
 
-        self.replaceByStr["cpp"]=["//@", "/*@*/", "\"@\""]
-        self.replaceByStr["java"]=["//@", "/*@*/", "\"@\""]
+        self.pattern[FileTypeEnum.CPP]=["(\\/\\/).*", "(\\/\\*).*([a-zA-Z0-9\\s]*|\\r|\\n).*(\\*\\/)", "(\\\").*[\\r\\na-zA-Z0-9\\s].*(\\\")"]
+        self.pattern[FileTypeEnum.JAVA]=["(//).*[a-zA-Z0-9\\s]*(\\r|\\n).*", "(\\/\\*).*[a-zA-Z0-9\\s\\r\\n].*(\\*\\/)", "(\\\").*[\\r\\na-zA-Z0-9\\s].*(\\\")"]
+
+        self.pattern[FileTypeEnum.CPP]=["\n", "/*"]
+        self.pattern[FileTypeEnum.JAVA]=["\n", "/*"]
+
+        self.replaceByStr[FileTypeEnum.CPP]=["//@", "/*@*/", "\"@\""]
+        self.replaceByStr[FileTypeEnum.JAVA]=["//@", "/*@*/", "\"@\""]
+
+
 
     def analyze(self, filePath, lang):
-        fileReader = FileReader()
+        fileReader = FR.FileReader()
         fileContent= fileReader.readFile(filePath)
-        print( str(fileContent).rstrip()) 
+        #print( str(fileContent).rstrip()) 
         for pattern in self.pattern[lang]:
+            tempContent = fileContent
             #regxFinder=re.compile(pattern)
-
-            print(pattern)
-            x = re.findall(pattern, str(fileContent))
-            print ("regx: ", x)
-'''           match = re.search(pattern, str(fileContent))
+            #x = re.findall(pattern, str(fileContent))
+            print ("\nregx: ", pattern)
+            match = re.search(pattern, tempContent)
+            #if match != None: 
+            #    print("\n-------Match at index % s, % s" % (match.start(), match.end()),str(fileContent)[match.start():match.end()])
             while match != None: 
-                print("\n-------Match at index % s, % s" % (match.start(), match.end()),str(fileContent)[match.start():match.end()])
-                match = re.search(pattern, str(fileContent)[match.end():])
-'''
+                print("-------Match at begin % s, end % s " % (match.start(), match.end()),tempContent[match.start():match.end()])
+                tempContent = tempContent[match.end():]
+                match = re.search(pattern, tempContent)
+
 if __name__ == "__main__" :
     print(sys.argv)
-    #commentAnalyzer = CommentAnalyzer()
-    #commentAnalyzer.analyze(sys.argv[1], "cpp")
-    fileReader = FR.FileReader()
-    fileContent= fileReader.readFile(sys.argv[1])
-    print(fileContent)
+    commentAnalyzer = CommentAnalyzer()
+    commentAnalyzer.analyze(sys.argv[1], FileTypeEnum.JAVA)
+

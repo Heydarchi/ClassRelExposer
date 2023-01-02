@@ -46,3 +46,11 @@ class ClassNode:
     variables: List[VariableNode] = field(default_factory=list)
     methods: List[MethodNode] = field(default_factory=list)
     relations: List[Inheritance] = field(default_factory=list)
+
+
+class FileTypeEnum(Enum):
+    C = 1
+    CPP = 2
+    JAVA = 3
+    KOTLIN = 4
+    PYTHON = 5

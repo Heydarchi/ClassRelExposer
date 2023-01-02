@@ -3,7 +3,6 @@ import re
 from AbstractAnalyzer import * 
 from AnalyzerEntities import *
 from PythonUtilityClasses import FileReader as FR
-
 class ClassAnalyzer(AbstractAnalyzer):
     def __init__(self) -> None:
         self.pattern = dict()
@@ -14,17 +13,17 @@ class ClassAnalyzer(AbstractAnalyzer):
         self.initPatterns()
 
     def initPatterns(self):
-        self.pattern["cpp"]=("(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?(class)\\s+[a-zA-Z0-9_\\s]*[:{;]")
-        self.pattern["java"]=["(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface|implements|extends)\\s+[a-zA-Z0-9_\\s]*)+[:{;]"]
+        self.pattern[FileTypeEnum.CPP]=("(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?(class)\\s+[a-zA-Z0-9_\\s]*[:{;]")
+        self.pattern[FileTypeEnum.JAVA]=["(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface|implements|extends)\\s+[a-zA-Z0-9_\\s]*)+[:{;]"]
 
-        self.classNamePattern["cpp"]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
-        self.classNamePattern["java"]=("(class|interface)\\s+([a-zA-Z0-9_])+\\s+")
+        self.classNamePattern[FileTypeEnum.CPP]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
+        self.classNamePattern[FileTypeEnum.JAVA]=("(class|interface)\\s+([a-zA-Z0-9_])+\\s+")
 
-        self.classImplementPattern["cpp"]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
-        self.classImplementPattern["java"]=("(implements)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]")
+        self.classImplementPattern[FileTypeEnum.CPP]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
+        self.classImplementPattern[FileTypeEnum.JAVA]=("(implements)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]")
 
-        self.classExtendPattern["cpp"]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
-        self.classExtendPattern["java"]=("(extends)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]")
+        self.classExtendPattern[FileTypeEnum.CPP]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
+        self.classExtendPattern[FileTypeEnum.JAVA]=("(extends)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]")
 
 
     def analyze(self, filePath, lang):
@@ -96,4 +95,4 @@ class ClassAnalyzer(AbstractAnalyzer):
 if __name__ == "__main__" :
     print(sys.argv)
     classAnalyzer = ClassAnalyzer()
-    classAnalyzer.analyze(sys.argv[1], "java")
+    classAnalyzer.analyze(sys.argv[1], FileTypeEnum.JAVA)
