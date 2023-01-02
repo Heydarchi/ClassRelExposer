@@ -32,6 +32,11 @@ class Inheritance:
     relationship: InheritanceEnum    
 
 @dataclass
+class UmlRelationMap:
+    name: str = "" 
+    relationship: InheritanceEnum = InheritanceEnum.DEPENDED  
+
+@dataclass
 class ClassNode:
     name: str = ""
     accessLevel: AccessEnum = AccessEnum.PUBLIC 
