@@ -49,6 +49,7 @@ class ClassNode:
 
 
 class FileTypeEnum(Enum):
+    UNDEFINED = 0
     C = 1
     CPP = 2
     JAVA = 3

@@ -46,7 +46,9 @@ class ClassAnalyzer(AbstractAnalyzer):
                 listOfClasses.append( classInfo )
                 tempContent = tempContent[match.end():]
                 match = re.search(pattern, tempContent)
-        print( listOfClasses )
+        print (listOfClasses)
+        return listOfClasses 
+
     def extractClassName(self, lang, inputStr):
             match = re.search(self.classNamePattern[lang], inputStr)
             if match != None: 
