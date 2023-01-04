@@ -16,10 +16,14 @@ class VariableAnalyzer(AbstractAnalyzer):
         self.pattern[FileTypeEnum.JAVA]=("[\\s;\\n{}}][(public|private)\\s+|(static)\\s+|(final)\\s+].*(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+(\\*)?\\s?[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?[;=]")
 
 
-    def analyze(self, filePath, lang):
-        fileReader = FR.FileReader()
-        fileContent= fileReader.readFile(filePath)
-        tempContent = fileContent
+    def analyze(self, filePath, lang, classStr = None):
+        listOfvariables = list()
+        if classStr == None:
+            fileReader = FR.FileReader()
+            tempContent= fileReader.readFile(filePath)
+        else:
+            tempContent = classStr
+
         print ("\nregx: ", self.pattern[lang])
         match = re.search(self.pattern[lang], tempContent)
         #if match != None: 
