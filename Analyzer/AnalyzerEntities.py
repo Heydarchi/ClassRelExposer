@@ -2,19 +2,6 @@ from dataclasses import dataclass, field
 from typing import List
 from enum import Enum
 
-@dataclass
-class VariableNode:
-    name: str
-    dataType: str
-    accessLevel: str
-    isStatic: bool
-
-@dataclass
-class MethodNode:
-    name: str
-    dataType: str
-    accessLevel: str
-    isStatic: bool
 
 class InheritanceEnum(Enum):
     EXTENDED = 1
@@ -25,6 +12,20 @@ class AccessEnum(Enum):
     PUBLIC = 1
     PRIVATE = 2
     PROTECTED = 3
+@dataclass
+class VariableNode:
+    name: str = ""
+    dataType: str = ""
+    accessLevel: AccessEnum = AccessEnum.PUBLIC 
+    isStatic: bool = False
+    isFinal: bool = False
+
+@dataclass
+class MethodNode:
+    name: str
+    dataType: str
+    accessLevel: str
+    isStatic: bool
 
 @dataclass
 class Inheritance:

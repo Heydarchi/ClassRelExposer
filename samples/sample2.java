@@ -51,7 +51,7 @@ public class CarDeviceProvisionedControllerImpl extends DeviceProvisionedControl
     private final ContentObserver mCarSettingsObserver;
     private final Test::Handler mMainHandler;
     private final SecureSettings mSecureSettings;
-    private final AtomicBoolean mInitted = new AtomicBoolean(false);
+    public final AtomicBoolean mInitted = new AtomicBoolean(false);
 
     @Inject
     public CarDeviceProvisionedControllerImpl(

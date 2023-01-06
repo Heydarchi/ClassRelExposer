@@ -79,12 +79,12 @@ class ClassAnalyzer(AbstractAnalyzer):
 
     def extractClassSpec(self, inputStr: str, classInfo: ClassNode):
         splittedStr = inputStr.split()
-        if "privat" in splittedStr :
-            classInfo.accessLevel = AccessEnum.PRIVATE
+        if "public" in splittedStr :
+            classInfo.accessLevel = AccessEnum.PUBLIC
         elif "protected" in splittedStr:
             classInfo.accessLevel = AccessEnum.PROTECTED
         else:
-            classInfo.accessLevel = AccessEnum.PUBLIC
+            classInfo.accessLevel = AccessEnum.PRIVATE
 
         if "final" in splittedStr:
             classInfo.isFinal = True
