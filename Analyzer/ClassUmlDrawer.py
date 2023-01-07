@@ -26,9 +26,23 @@ class ClassUmlDrawer:
             if relation.relationship == InheritanceEnum.EXTENDED:
                 plantUmlList.append(classInfo.name + " -----|> " + relation.name)
 
+        plantUmlList.extend(self.drawVariables(classInfo.name, classInfo.variables))
+        plantUmlList.extend(self.drawMethods(classInfo.name, classInfo.methods))
 
         plantUmlList.append("@enduml")
         self.writeToFile(classInfo.name+"_uml.puml", plantUmlList)
+
+    def drawMethods(self, className, listOfMethods):
+        methodUml = list()
+        for method in listOfMethods:
+                methodUml.extend(self.drawVariables(className, method.variables))
+        return methodUml
+
+    def drawVariables(self, className, listOfVariables):
+        variableUml = list()
+        for variable in listOfVariables:
+                variableUml.append(className + " .....> " + variable.dataType)
+        return variableUml
 
     def writeToFile(self, fileName, listOfStr):
         fw = FW.FileWriter()
