@@ -34,7 +34,8 @@ class VariableAnalyzer(AbstractAnalyzer):
             listOfVariables.append( self.extractVariableInfo(lang, " ".join(tempContent[match.start():match.end()].replace("\n"," ").split()).strip()))
             match = re.search(self.pattern[lang], tempContent)
         print( listOfVariables )
-
+        return listOfVariables
+        
     def extractVariableInfo(self, lang, inputString):
         variableInfo = VariableNode()
         splittedStr = inputString.split()

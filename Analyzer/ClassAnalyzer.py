@@ -2,6 +2,8 @@ import sys
 import re
 from AbstractAnalyzer import * 
 from AnalyzerEntities import *
+from MethodAnalyzer import *
+from VariableAnalyzer import *
 from PythonUtilityClasses import FileReader as FR
 class ClassAnalyzer(AbstractAnalyzer):
     def __init__(self) -> None:
@@ -43,7 +45,19 @@ class ClassAnalyzer(AbstractAnalyzer):
                 classInfo.relations = self.extractClassInheritances(lang, tempContent[match.start():match.end()])
                 print("====> classInfo.relations: ", classInfo.relations)
                 classInfo = self.extractClassSpec(tempContent[match.start():match.end()], classInfo)
+
+                classBoundary = self.findClassBoundary(lang, tempContent[match.start():])
+
+                #methods = MethodAnalyzer().analyze(None , lang, classStr =tempContent[match.start(): (match.end() + classBoundary)] )
+                #print(methods)
+                #classInfo.methods.extend(methods)
+
+                variables = VariableAnalyzer().analyze(None , lang, classStr =tempContent[match.start(): (match.end() + classBoundary)] )
+                #print(variables)
+                classInfo.variables.extend(variables)
+
                 listOfClasses.append( classInfo )
+
                 tempContent = tempContent[match.end():]
                 match = re.search(pattern, tempContent)
         print (listOfClasses)
@@ -93,6 +107,18 @@ class ClassAnalyzer(AbstractAnalyzer):
             classInfo.isInterface = True
 
         return classInfo
+
+    def findClassBoundary(self, lang, inputStr):
+        bracketCount = 0
+        index = 0 
+        for index in range(len(inputStr)):
+            if inputStr[index] == "}":
+                bracketCount = bracketCount - 1
+                if bracketCount == 0:
+                    return index 
+            elif inputStr[index] == "{":
+                bracketCount = bracketCount + 1
+        return index
 
 if __name__ == "__main__" :
     print(sys.argv)
