@@ -5,6 +5,6 @@ AOSP internal from packages/classes relationship perspective
 
 
 ### TODO:
-#### - Implement MethodAnalyzer 
-#### - Find the class body to feed VariableAnalyzer & MethodAnalyzer
-#### - Add VarableAnalyzer & MethodAnalyzer to FileAnalyzer/ClassAnalyzer
+#### - Separate the variables  of Class & Method
+#### - Detect the cascade classes
+#### - Make a list of primitive variable types
