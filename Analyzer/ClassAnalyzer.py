@@ -4,6 +4,7 @@ from AbstractAnalyzer import *
 from AnalyzerEntities import *
 from MethodAnalyzer import *
 from VariableAnalyzer import *
+from AnalyzerHelper import *
 from PythonUtilityClasses import FileReader as FR
 class ClassAnalyzer(AbstractAnalyzer):
     def __init__(self) -> None:
@@ -39,20 +40,20 @@ class ClassAnalyzer(AbstractAnalyzer):
             match = re.search(pattern, tempContent)
             while match != None: 
                 classInfo = ClassNode()
-                print("-------Match at begin % s, end % s " % (match.start(), match.end()),tempContent[match.start():match.end()])
+                #print("-------Match at begin % s, end % s " % (match.start(), match.end()),tempContent[match.start():match.end()])
                 classInfo.name = self.extractClassName(lang, tempContent[match.start():match.end()])
-                print("====> Class/Interface name: ",classInfo.name)
+                #print("====> Class/Interface name: ",classInfo.name)
                 classInfo.relations = self.extractClassInheritances(lang, tempContent[match.start():match.end()])
-                print("====> classInfo.relations: ", classInfo.relations)
+                #print("====> classInfo.relations: ", classInfo.relations)
                 classInfo = self.extractClassSpec(tempContent[match.start():match.end()], classInfo)
 
-                classBoundary = self.findClassBoundary(lang, tempContent[match.start():])
+                classBoundary = AnalyzerHelper().findClassBoundary(lang, tempContent[match.start():])
 
-                #methods = MethodAnalyzer().analyze(None , lang, classStr =tempContent[match.start(): (match.end() + classBoundary)] )
+                methods = MethodAnalyzer().analyze(None , lang, tempContent[match.start(): (match.end() + classBoundary)] )
                 #print(methods)
-                #classInfo.methods.extend(methods)
+                classInfo.methods.extend(methods)
 
-                variables = VariableAnalyzer().analyze(None , lang, classStr =tempContent[match.start(): (match.end() + classBoundary)] )
+                variables = VariableAnalyzer().analyze(None , lang, tempContent[match.start(): (match.end() + classBoundary)] )
                 #print(variables)
                 classInfo.variables.extend(variables)
 
@@ -108,17 +109,6 @@ class ClassAnalyzer(AbstractAnalyzer):
 
         return classInfo
 
-    def findClassBoundary(self, lang, inputStr):
-        bracketCount = 0
-        index = 0 
-        for index in range(len(inputStr)):
-            if inputStr[index] == "}":
-                bracketCount = bracketCount - 1
-                if bracketCount == 0:
-                    return index 
-            elif inputStr[index] == "{":
-                bracketCount = bracketCount + 1
-        return index
 
 if __name__ == "__main__" :
     print(sys.argv)

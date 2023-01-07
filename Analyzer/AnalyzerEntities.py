@@ -22,10 +22,12 @@ class VariableNode:
 
 @dataclass
 class MethodNode:
-    name: str
-    dataType: str
-    accessLevel: str
-    isStatic: bool
+    name: str = ""
+    dataType: str = ""
+    accessLevel: AccessEnum = AccessEnum.PUBLIC 
+    isStatic: bool = False
+    isOverridden: bool = False
+    variables: List[VariableNode] = field(default_factory=list)
 
 @dataclass
 class Inheritance:

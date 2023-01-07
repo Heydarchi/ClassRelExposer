@@ -64,7 +64,7 @@ public class CarDeviceProvisionedControllerImpl extends DeviceProvisionedControl
             @Main Executor mainExecutor) {
         super(secureSettings, globalSettings, userTracker, dumpManager, backgroundHandler,
                 mainExecutor);
-
+        Int temp;
         mMainHandler = mainHandler;
         mSecureSettings = secureSettings;
         mUserSetupInProgressUri = mSecureSettings.getUriFor(
