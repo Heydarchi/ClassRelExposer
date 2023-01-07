@@ -30,11 +30,18 @@ class ClassUmlDrawer:
         plantUmlList.extend(self.drawMethods(classInfo.name, classInfo.methods))
 
         plantUmlList.append("@enduml")
+
+        #Remove redundance items
+        plantUmlList = list(dict.fromkeys(plantUmlList))
+
+
         self.writeToFile(classInfo.name+"_uml.puml", plantUmlList)
 
     def drawMethods(self, className, listOfMethods):
         methodUml = list()
         for method in listOfMethods:
+                if method.dataType != None : 
+                    methodUml.append(className + " .....> " + method.dataType)
                 methodUml.extend(self.drawVariables(className, method.variables))
         return methodUml
 

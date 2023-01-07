@@ -69,9 +69,13 @@ class MethodAnalyzer(AbstractAnalyzer):
             methodInfo.isFinal = True
             splittedStr = [item for item in splittedStr if item != "@Override"]
 
-        
-        methodInfo.name = splittedStr[1]
-        methodInfo.dataType = splittedStr[0]
+        if len(splittedStr) > 1 and "@" not in splittedStr[0]:
+            methodInfo.name = splittedStr[1]
+            methodInfo.dataType = splittedStr[0]
+        else:
+            methodInfo.name = splittedStr[0]
+            methodInfo.dataType = None
+
         #print(inputString)
         #print (variableInfo)
         return methodInfo
