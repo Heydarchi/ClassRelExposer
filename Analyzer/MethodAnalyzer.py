@@ -32,7 +32,8 @@ class MethodAnalyzer(AbstractAnalyzer):
         #    print("\n-------Match at index % s, % s" % (match.start(), match.end()),str(fileContent)[match.start():match.end()])
         while match != None: 
             #print("-------Match at begin % s, end % s " % (match.start(), match.end()),tempContent[match.start():match.end()])
-            if "new" not in tempContent[match.start(): match.end()] :
+            res = [ele for ele in ["new", "return"] if(ele in tempContent[match.start(): match.end()])]
+            if res == False :
                 methodInfo = self.extractMethodInfo(lang, tempContent[match.start(): match.end()])
                 methodBoundary = AnalyzerHelper().findMethodBoundary(lang, tempContent[match.start():])
 
