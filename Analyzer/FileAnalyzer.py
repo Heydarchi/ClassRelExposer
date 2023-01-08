@@ -5,7 +5,8 @@ from ClassUmlDrawer import *
 from PythonUtilityClasses import SystemUtility as SU
 class FileAnalyzer(AbstractAnalyzer):
     def __init__(self) -> None:
-        pass
+        if not os.path.exists("../out"):
+            os.makedirs("../out")
 
     def analyze(self, targetPath, pattern):
         systemUtility = SU.SystemUtility()
