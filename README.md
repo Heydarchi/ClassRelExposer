@@ -44,7 +44,7 @@ git clone https://github.com/Heydarchi/ClassRelExposer.git
 ```
 Run the command below inside the cloned folder
 ```
-git submodule update
+git submodule update --init --recursive
 ```
 <br/>
 

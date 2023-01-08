@@ -15,11 +15,12 @@ class FileAnalyzer(AbstractAnalyzer):
         for filePath in listOfFiles:
             classAnalyzer = ClassAnalyzer()
             language = self.detectLang(filePath)
-            print(filePath,": ", language)
             if language != FileTypeEnum.UNDEFINED :
+                print("- Analyzing: " + filePath, language)
                 listOfClasses = classAnalyzer.analyze(filePath, language)
                 self.drawUmls(listOfClasses)
-
+            else:
+                print("- Undefined file extension : " + filePath)
     def drawUmls(self, listOfClassNodes):
         for classInfo in listOfClassNodes:
             umlDrawer = ClassUmlDrawer()

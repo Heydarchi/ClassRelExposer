@@ -23,8 +23,8 @@ class VariableAnalyzer(AbstractAnalyzer):
             tempContent= fileReader.readFile(filePath)
         else:
             tempContent = classStr
-        print("\n\n",classStr)
-        print ("\n\nregx: ", self.pattern[lang])
+        #print("\n\n",classStr)
+        #print ("\n\nregx: ", self.pattern[lang])
         match = re.search(self.pattern[lang], tempContent)
         #if match != None: 
         #    print("\n-------Match at index % s, % s" % (match.start(), match.end()),str(fileContent)[match.start():match.end()])
@@ -33,14 +33,14 @@ class VariableAnalyzer(AbstractAnalyzer):
             listOfVariables.append( self.extractVariableInfo(lang, " ".join(tempContent[match.start():match.end()].replace("\n"," ").split()).strip()))
             tempContent = tempContent[match.end():]
             match = re.search(self.pattern[lang], tempContent)
-        print( listOfVariables )
+        #print( listOfVariables )
         return listOfVariables
         
     def extractVariableInfo(self, lang, inputString):
         variableInfo = VariableNode()
         splittedStr = inputString.split()
-        print("----> ", inputString)
-        print("---->>>>> ", splittedStr)
+        #print("----> ", inputString)
+        #print("---->>>>> ", splittedStr)
         if "public" in splittedStr :
             variableInfo.accessLevel = AccessEnum.PUBLIC
             splittedStr = [item for item in splittedStr if item != "public"]

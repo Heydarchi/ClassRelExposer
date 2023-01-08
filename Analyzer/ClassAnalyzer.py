@@ -68,7 +68,7 @@ class ClassAnalyzer(AbstractAnalyzer):
 
                 tempContent = tempContent[match.end() + classBoundary:]
                 match = re.search(pattern, tempContent)
-        print (listOfClasses)
+        #print (listOfClasses)
         return listOfClasses 
 
     def extractClassName(self, lang, inputStr):

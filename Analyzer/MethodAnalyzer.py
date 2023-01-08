@@ -26,7 +26,7 @@ class MethodAnalyzer(AbstractAnalyzer):
         else:
             tempContent = classStr
 
-        print ("\nregx: ", self.pattern[lang])
+        #print ("\nregx: ", self.pattern[lang])
         match = re.search(self.pattern[lang], tempContent)
         #if match != None: 
         #    print("\n-------Match at index % s, % s" % (match.start(), match.end()),str(fileContent)[match.start():match.end()])
@@ -51,8 +51,8 @@ class MethodAnalyzer(AbstractAnalyzer):
     def extractMethodInfo(self, lang, inputString):
         methodInfo = MethodNode()
         splittedStr = inputString.split()
-        print("----> ", inputString)
-        print("---->>>>> ", splittedStr)
+        #print("----> ", inputString)
+        #print("---->>>>> ", splittedStr)
         if "public" in splittedStr :
             methodInfo.accessLevel = AccessEnum.PUBLIC
             splittedStr = [item for item in splittedStr if item != "public"]
