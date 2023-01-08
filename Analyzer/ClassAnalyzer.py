@@ -49,17 +49,24 @@ class ClassAnalyzer(AbstractAnalyzer):
 
                 classBoundary = AnalyzerHelper().findClassBoundary(lang, tempContent[match.start():])
 
+                '''### Find the variables & methods before the class's begin
+                methods = MethodAnalyzer().analyze(None , lang, tempContent[:match.start())] )
+                classInfo.methods.extend(methods)
+
+                variables = VariableAnalyzer().analyze(None , lang, tempContent[:match.start()] )
+                classInfo.variables.extend(variables)
+                '''
+
+                ### Find the variables & methods within the class's boundary
                 methods = MethodAnalyzer().analyze(None , lang, tempContent[match.start(): (match.end() + classBoundary)] )
-                #print(methods)
                 classInfo.methods.extend(methods)
 
                 variables = VariableAnalyzer().analyze(None , lang, tempContent[match.start(): (match.end() + classBoundary)] )
-                #print(variables)
                 classInfo.variables.extend(variables)
 
                 listOfClasses.append( classInfo )
 
-                tempContent = tempContent[match.end():]
+                tempContent = tempContent[match.end() + classBoundary:]
                 match = re.search(pattern, tempContent)
         print (listOfClasses)
         return listOfClasses 

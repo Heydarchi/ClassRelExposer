@@ -9,6 +9,8 @@ class ClassUmlDrawer:
         self.mapList.append( UmlRelationMap("", InheritanceEnum.EXTENDED))
         self.mapList.append( UmlRelationMap("", InheritanceEnum.IMPLEMENTED))
 
+        self.dataTypeToIgnore = ["boolean","byte","char","short","int","long","float","double","void","Int","return"]
+
     def drawUml(self, classInfo: ClassNode):
         plantUmlList = list()
         plantUmlList.append("@startuml")
@@ -34,8 +36,9 @@ class ClassUmlDrawer:
         #Remove redundance items
         plantUmlList = list(dict.fromkeys(plantUmlList))
 
-
-        self.writeToFile(classInfo.name+"_uml.puml", plantUmlList)
+        filePath = "../out/" + classInfo.name+"_uml.puml"
+        self.writeToFile(filePath, plantUmlList)
+        self.generatePng(filePath)
 
     def drawMethods(self, className, listOfMethods):
         methodUml = list()
@@ -48,8 +51,12 @@ class ClassUmlDrawer:
     def drawVariables(self, className, listOfVariables):
         variableUml = list()
         for variable in listOfVariables:
+            if variable.dataType not in self.dataTypeToIgnore:
                 variableUml.append(className + " .....> " + variable.dataType)
         return variableUml
+
+    def generatePng(self, filepath):
+        os.system("java -jar plantuml/plantuml.jar " + filepath)
 
     def writeToFile(self, fileName, listOfStr):
         fw = FW.FileWriter()

@@ -42,8 +42,9 @@ class MethodAnalyzer(AbstractAnalyzer):
                 methodInfo.variables.extend(variables)
 
                 listOfMethods.append(methodInfo)
-            
-            tempContent = tempContent[match.end():]
+                tempContent = tempContent[match.end() + methodBoundary:]
+            else:
+                tempContent = tempContent[match.end():]
             match = re.search(self.pattern[lang], tempContent)
         return listOfMethods
 
