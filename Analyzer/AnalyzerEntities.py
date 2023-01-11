@@ -58,3 +58,4 @@ class FileTypeEnum(Enum):
     JAVA = 3
     KOTLIN = 4
     PYTHON = 5
+    CSHARP = 6

@@ -31,6 +31,8 @@ class FileAnalyzer(AbstractAnalyzer):
             return FileTypeEnum.JAVA
         elif ".cpp" in fileName:
             return FileTypeEnum.CPP
+        elif ".cs" in fileName:
+            return FileTypeEnum.CSHARP
         else:
             return FileTypeEnum.UNDEFINED
         
