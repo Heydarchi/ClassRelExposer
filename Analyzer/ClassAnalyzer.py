@@ -18,7 +18,7 @@ class ClassAnalyzer(AbstractAnalyzer):
     def initPatterns(self):
         self.pattern[FileTypeEnum.CPP]=("(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?(class)\\s+[a-zA-Z0-9_\\s]*[:{;]")
         self.pattern[FileTypeEnum.JAVA]=["(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface|implements|extends)\\s+[a-zA-Z0-9_\\s]*)+[:{;]"]
-        self.pattern[FileTypeEnum.CSHARP]=["(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface|implements|extends)\\s+[a-zA-Z0-9_\\s]*)+[:{;]"]
+        self.pattern[FileTypeEnum.CSHARP]=["(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface)\\s+)[a-zA-Z0-9_]+\\s+(:)?\\s?(\\n)?[a-zA-Z0-9_\\s]*(\\n)?[{;](\\n)?"]
 
         self.classNamePattern[FileTypeEnum.CPP]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
         self.classNamePattern[FileTypeEnum.JAVA]=("(class|interface)\\s+([a-zA-Z0-9_])+\\s+")
@@ -26,17 +26,22 @@ class ClassAnalyzer(AbstractAnalyzer):
 
         self.classImplementPattern[FileTypeEnum.CPP]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
         self.classImplementPattern[FileTypeEnum.JAVA]=("(implements)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]")
-        self.classImplementPattern[FileTypeEnum.CSHARP]=("\\s+([a-zA-Z0-9_])+\s+:[\\r\\n\\s]+")
+        self.classImplementPattern[FileTypeEnum.CSHARP]=("(:)\\s?(\\n)?[a-zA-Z0-9_\s]+\\s?\\n?\\s?[; {]")
 
         self.classExtendPattern[FileTypeEnum.CPP]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
         self.classExtendPattern[FileTypeEnum.JAVA]=("(extends)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]")
-        self.classExtendPattern[FileTypeEnum.CSHARP]=("\\s+([a-zA-Z0-9_])+\s+:[\\r\\n\\s]+")
+        self.classExtendPattern[FileTypeEnum.CSHARP]=("(:)\\s?(\\n)?[a-zA-Z0-9_\s]+\\s?\\n?\\s?[; {]")
+                                                                            
+
+    def analyze(self, filePath, lang, inputStr = None):
+        if inputStr == None:
+            fileReader = FR.FileReader()
+            fileContent= fileReader.readFile(filePath)
+        else:
+            fileContent = inputStr
 
 
-    def analyze(self, filePath, lang):
-        fileReader = FR.FileReader()
-        fileContent= fileReader.readFile(filePath)
-        #print( str(fileContent).rstrip()) 
+        print("\n********************\n", str(fileContent).rstrip()) 
         listOfClasses = list()
         for pattern in self.pattern[lang]:
             tempContent = fileContent
@@ -44,7 +49,7 @@ class ClassAnalyzer(AbstractAnalyzer):
             match = re.search(pattern, tempContent)
             while match != None: 
                 classInfo = ClassNode()
-                #print("-------Match at begin % s, end % s " % (match.start(), match.end()),tempContent[match.start():match.end()])
+                print("-------Match at begin % s, end % s " % (match.start(), match.end()),tempContent[match.start():match.end()])
                 classInfo.name = self.extractClassName(lang, tempContent[match.start():match.end()])
                 #print("====> Class/Interface name: ",classInfo.name)
                 classInfo.relations = self.extractClassInheritances(lang, tempContent[match.start():match.end()])
@@ -68,7 +73,12 @@ class ClassAnalyzer(AbstractAnalyzer):
                 variables = VariableAnalyzer().analyze(None , lang, tempContent[match.start(): (match.end() + classBoundary)] )
                 classInfo.variables.extend(variables)
 
+                classAnalyzer = ClassAnalyzer()
+                classInfo.classes = classAnalyzer.analyze(None, lang, inputStr=tempContent[match.end(): (match.end() + classBoundary)])
+
                 listOfClasses.append( classInfo )
+
+
 
                 tempContent = tempContent[match.end() + classBoundary:]
                 match = re.search(pattern, tempContent)
@@ -76,6 +86,7 @@ class ClassAnalyzer(AbstractAnalyzer):
         return listOfClasses 
 
     def extractClassName(self, lang, inputStr):
+            print("++++++++++++ extractClassName:   ", inputStr)
             match = re.search(self.classNamePattern[lang], inputStr)
             if match != None: 
                 className = inputStr[match.start():match.end()].strip().split(" ")[1]
@@ -94,11 +105,13 @@ class ClassAnalyzer(AbstractAnalyzer):
 
             classImplementName = None
             match = re.search(self.classImplementPattern[lang], inputStr)
-            if match != None: 
+            if match != None and lang == FileTypeEnum.JAVA: 
                 #print("classImplementName: ", " ".join(inputStr[match.start():match.end()].replace("\n"," ").split()).strip())
                 inherit = Inheritance(name = " ".join(inputStr[match.start():match.end()].replace("\n"," ").split()).strip().split(" ")[1],
                     relationship = InheritanceEnum.IMPLEMENTED)
                 inheritance.append(inherit)
+
+            
 
             return inheritance
 

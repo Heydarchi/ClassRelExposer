@@ -9,7 +9,7 @@ class ClassUmlDrawer:
         self.mapList.append( UmlRelationMap("", InheritanceEnum.EXTENDED))
         self.mapList.append( UmlRelationMap("", InheritanceEnum.IMPLEMENTED))
 
-        self.dataTypeToIgnore = ["boolean","byte","char","short","int","long","float","double","void","Int","return"]
+        self.dataTypeToIgnore = ["boolean","byte","char","short","int","long","float","double","void","Int","return", "var"]
 
     def drawUml(self, classInfo: ClassNode):
         plantUmlList = list()
@@ -28,6 +28,7 @@ class ClassUmlDrawer:
             if relation.relationship == InheritanceEnum.EXTENDED:
                 plantUmlList.append(classInfo.name + " -----|> " + relation.name)
 
+        plantUmlList.extend(self.drawClasses(classInfo.name, classInfo.classes))
         plantUmlList.extend(self.drawVariables(classInfo.name, classInfo.variables))
         plantUmlList.extend(self.drawMethods(classInfo.name, classInfo.methods))
 
@@ -39,6 +40,13 @@ class ClassUmlDrawer:
         filePath = "../out/" + classInfo.name+"_uml.puml"
         self.writeToFile(filePath, plantUmlList)
         self.generatePng(filePath)
+
+
+    def drawClasses(self, className, listOfClasses):
+        classsUml = list()
+        for classs in listOfClasses:
+                    classsUml.append(className + " .....> " + classs.name)
+        return classsUml
 
     def drawMethods(self, className, listOfMethods):
         methodUml = list()

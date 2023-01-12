@@ -49,7 +49,7 @@ class ClassNode:
     variables: List[VariableNode] = field(default_factory=list)
     methods: List[MethodNode] = field(default_factory=list)
     relations: List[Inheritance] = field(default_factory=list)
-
+    classes: List['ClassNode'] = field(default_factory=list)
 
 class FileTypeEnum(Enum):
     UNDEFINED = 0
