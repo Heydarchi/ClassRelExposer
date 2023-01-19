@@ -18,11 +18,11 @@ class ClassAnalyzer(AbstractAnalyzer):
     def initPatterns(self):
         self.pattern[FileTypeEnum.CPP]=("(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?(class)\\s+[a-zA-Z0-9_\\s]*[:{;]")
         self.pattern[FileTypeEnum.JAVA]=["(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface|implements|extends)\\s+[a-zA-Z0-9_\\s]*)+[:{;]"]
-        self.pattern[FileTypeEnum.CSHARP]=["(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface)\\s+)[a-zA-Z0-9_]+\\s+(:)?\\s?(\\n)?[a-zA-Z0-9_\\s]*(\\n)?[{;](\\n)?"]
+        self.pattern[FileTypeEnum.CSHARP]=["(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface)\\s+)[a-zA-Z0-9_]+\\s?(:)?\\s?(\\n)?[a-zA-Z0-9_\\s]*(\\n)?[{;](\\n)?"]
 
         self.classNamePattern[FileTypeEnum.CPP]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
         self.classNamePattern[FileTypeEnum.JAVA]=("(class|interface)\\s+([a-zA-Z0-9_])+\\s+")
-        self.classNamePattern[FileTypeEnum.CSHARP]=("(class|interface)\\s+([a-zA-Z0-9_])+\\s+")
+        self.classNamePattern[FileTypeEnum.CSHARP]=("(class|interface)\\s+([a-zA-Z0-9_])+\\s?")
 
         self.classImplementPattern[FileTypeEnum.CPP]=("(class)\\s+([a-zA-Z0-9_])*\\s+")
         self.classImplementPattern[FileTypeEnum.JAVA]=("(implements)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]")

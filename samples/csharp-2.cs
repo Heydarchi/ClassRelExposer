@@ -79,5 +79,9 @@ namespace CppSharp
 
             return true;
         }
+
+        private class TestClass{
+            
+        }
     }
 }

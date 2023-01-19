@@ -53,5 +53,6 @@ public interface CarDeviceProvisionedController extends DeviceProvisionedControl
 
 public static class TestClass implements Haha
 {
+    InnerTestClass innerTC;
 
 }
