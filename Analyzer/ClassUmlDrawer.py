@@ -40,7 +40,7 @@ class ClassUmlDrawer:
         filePath = "../out/" + classInfo.name+"_uml.puml"
         self.writeToFile(filePath, plantUmlList)
         self.generatePng(filePath)
-
+        #print(classInfo)
 
     def drawClasses(self, className, listOfClasses):
         classsUml = list()
