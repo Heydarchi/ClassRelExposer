@@ -1,6 +1,7 @@
 import os, sys
 from AnalyzerEntities import  *
 from PythonUtilityClasses import FileWriter as FW
+
 class ClassUmlDrawer:
 
     def __init__(self) -> None:
@@ -11,26 +12,18 @@ class ClassUmlDrawer:
 
         self.dataTypeToIgnore = ["boolean","byte","char","short","int","long","float","double","void","Int","return", "var"]
 
+
     def drawUml(self, classInfo: ClassNode):
         plantUmlList = list()
         plantUmlList.append("@startuml")
+
         '''
         if classInfo.isInterface:
             plantUmlList.append("interface " + classInfo.name)
         else:
             plantUmlList.append("class " + classInfo.name)
         '''
-        for relation in classInfo.relations:
-            if relation.relationship == InheritanceEnum.DEPENDED:
-                plantUmlList.append(classInfo.name + " .....> " + relation.name)
-            if relation.relationship == InheritanceEnum.IMPLEMENTED:
-                plantUmlList.append(classInfo.name + " .....> " + relation.name)
-            if relation.relationship == InheritanceEnum.EXTENDED:
-                plantUmlList.append(classInfo.name + " -----|> " + relation.name)
-
-        plantUmlList.extend(self.drawClasses(classInfo.name, classInfo.classes))
-        plantUmlList.extend(self.drawVariables(classInfo.name, classInfo.variables))
-        plantUmlList.extend(self.drawMethods(classInfo.name, classInfo.methods))
+        plantUmlList.extend(self.dumpClass(classInfo))
 
         plantUmlList.append("@enduml")
 
@@ -40,7 +33,25 @@ class ClassUmlDrawer:
         filePath = "../out/" + classInfo.name+"_uml.puml"
         self.writeToFile(filePath, plantUmlList)
         self.generatePng(filePath)
-        #print(classInfo)
+        print(classInfo)
+
+    def dumpClass(self, classInfo: ClassNode):
+        plantUmlList = list()
+
+        for relation in classInfo.relations:
+            if relation.relationship == InheritanceEnum.DEPENDED:
+                plantUmlList.append(classInfo.name + " .....> " + relation.name)
+            if relation.relationship == InheritanceEnum.IMPLEMENTED:
+                plantUmlList.append(classInfo.name + " .....> " + relation.name)
+            if relation.relationship == InheritanceEnum.EXTENDED:
+                plantUmlList.append(classInfo.name + " -----|> " + relation.name)
+
+        for innerClass in classInfo.classes:
+            plantUmlList.extend(self.dumpClass(innerClass))
+        plantUmlList.extend(self.drawVariables(classInfo.name, classInfo.variables))
+        plantUmlList.extend(self.drawMethods(classInfo.name, classInfo.methods))
+        return plantUmlList
+
 
     def drawClasses(self, className, listOfClasses):
         classsUml = list()

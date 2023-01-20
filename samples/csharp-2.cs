@@ -81,7 +81,7 @@ namespace CppSharp
         }
 
         private class TestClass{
-            
+            private UniTyio tert;
         }
     }
 }
