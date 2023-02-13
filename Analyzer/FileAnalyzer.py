@@ -29,7 +29,7 @@ class FileAnalyzer(AbstractAnalyzer):
     def detectLang(self, fileName):
         if ".java" in fileName:
             return FileTypeEnum.JAVA
-        elif ".cpp" in fileName:
+        elif ".cpp" in fileName or ".h" in fileName:
             return FileTypeEnum.CPP
         elif ".cs" in fileName:
             return FileTypeEnum.CSHARP
