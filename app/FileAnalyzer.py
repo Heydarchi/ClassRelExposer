@@ -1,7 +1,5 @@
-import re
-from AbstractAnalyzer import *
-from ClassAnalyzer import *
-from ClassUmlDrawer import *
+from analyzer.ClassAnalyzer import *
+from drawer.ClassUmlDrawer import *
 from PythonUtilityClasses import SystemUtility as SU
 
 
@@ -12,7 +10,7 @@ class FileAnalyzer(AbstractAnalyzer):
 
     def analyze(self, targetPath, pattern):
         systemUtility = SU.SystemUtility()
-        listOfFiles = systemUtility.getListOfFiles(targetPath, "*")
+        listOfFiles = systemUtility.get_list_of_files(targetPath, "*")
         print(listOfFiles)
         for filePath in listOfFiles:
             classAnalyzer = ClassAnalyzer()
