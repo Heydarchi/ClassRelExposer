@@ -8,48 +8,56 @@ class InheritanceEnum(Enum):
     IMPLEMENTED = 2
     DEPENDED = 3
 
+
 class AccessEnum(Enum):
     PUBLIC = 1
     PRIVATE = 2
     PROTECTED = 3
+
+
 @dataclass
 class VariableNode:
     name: str = ""
     dataType: str = ""
-    accessLevel: AccessEnum = AccessEnum.PUBLIC 
+    accessLevel: AccessEnum = AccessEnum.PUBLIC
     isStatic: bool = False
     isFinal: bool = False
+
 
 @dataclass
 class MethodNode:
     name: str = ""
     dataType: str = ""
-    accessLevel: AccessEnum = AccessEnum.PUBLIC 
+    accessLevel: AccessEnum = AccessEnum.PUBLIC
     isStatic: bool = False
     isOverridden: bool = False
     variables: List[VariableNode] = field(default_factory=list)
 
+
 @dataclass
 class Inheritance:
-    name: str 
-    relationship: InheritanceEnum    
+    name: str
+    relationship: InheritanceEnum
+
 
 @dataclass
 class UmlRelationMap:
-    name: str = "" 
-    relationship: InheritanceEnum = InheritanceEnum.DEPENDED  
+    name: str = ""
+    relationship: InheritanceEnum = InheritanceEnum.DEPENDED
+
 
 @dataclass
 class ClassNode:
     name: str = ""
-    accessLevel: AccessEnum = AccessEnum.PUBLIC 
+    accessLevel: AccessEnum = AccessEnum.PUBLIC
     isStatic: bool = False
     isFinal: bool = False
     isInterface: bool = False
     variables: List[VariableNode] = field(default_factory=list)
     methods: List[MethodNode] = field(default_factory=list)
     relations: List[Inheritance] = field(default_factory=list)
-    classes: List['ClassNode'] = field(default_factory=list)
+    classes: List["ClassNode"] = field(default_factory=list)
+
 
 class FileTypeEnum(Enum):
     UNDEFINED = 0

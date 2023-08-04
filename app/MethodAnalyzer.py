@@ -2,11 +2,13 @@ import sys
 from pathlib import Path
 
 import re
-from AbstractAnalyzer import * 
+from AbstractAnalyzer import *
 from AnalyzerEntities import *
 from AnalyzerHelper import *
 from VariableAnalyzer import *
 from PythonUtilityClasses import FileReader as FR
+
+
 class MethodAnalyzer(AbstractAnalyzer):
     def __init__(self) -> None:
         self.pattern = dict()
@@ -14,47 +16,64 @@ class MethodAnalyzer(AbstractAnalyzer):
         self.initPatterns()
 
     def initPatterns(self):
-        self.pattern[FileTypeEnum.CPP]=("[\\s;\\n{}(::)]([a-zA-Z0-9_<>])*\\s?\\(([a-zA-Z0-9_,\\s<>]|(\\s\\*)|(\\*\\s))*\\)\\s?[{;:\\n\\r].*")
-        self.pattern[FileTypeEnum.JAVA]=("(@[a-zA-Z0-9_]+[\\s+|\\n]+)?[\\s;\\n{}}(::)].*[(public|private|protected)\\s+|(static)\\s+]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?\\(")
-        self.pattern[FileTypeEnum.CSHARP]=("(@[a-zA-Z0-9_]+[\\s+|\\n]+)?[\\s;\\n{}}(::)].*[(public|private|protected)\\s+|(static)\\s+]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?\\(")
+        self.pattern[
+            FileTypeEnum.CPP
+        ] = "[\\s;\\n{}(::)]([a-zA-Z0-9_<>])*\\s?\\(([a-zA-Z0-9_,\\s<>]|(\\s\\*)|(\\*\\s))*\\)\\s?[{;:\\n\\r].*"
+        self.pattern[
+            FileTypeEnum.JAVA
+        ] = "(@[a-zA-Z0-9_]+[\\s+|\\n]+)?[\\s;\\n{}}(::)].*[(public|private|protected)\\s+|(static)\\s+]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?\\("
+        self.pattern[
+            FileTypeEnum.CSHARP
+        ] = "(@[a-zA-Z0-9_]+[\\s+|\\n]+)?[\\s;\\n{}}(::)].*[(public|private|protected)\\s+|(static)\\s+]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?\\("
 
-
-    def analyze(self, filePath, lang, classStr = None):
+    def analyze(self, filePath, lang, classStr=None):
         listOfMethods = list()
         if classStr == None:
             fileReader = FR.FileReader()
-            tempContent= fileReader.readFile(filePath)
+            tempContent = fileReader.readFile(filePath)
         else:
             tempContent = classStr
 
-        #print ("\nregx: ", self.pattern[lang])
+        # print ("\nregx: ", self.pattern[lang])
         match = re.search(self.pattern[lang], tempContent)
-        #if match != None: 
+        # if match != None:
         #    print("\n-------Match at index % s, % s" % (match.start(), match.end()),str(fileContent)[match.start():match.end()])
-        while match != None: 
-            #print("-------Match at begin % s, end % s " % (match.start(), match.end()),tempContent[match.start():match.end()])
-            res = [ele for ele in ["new", "return"] if(ele in tempContent[match.start(): match.end()])]
-            if res == False :
-                methodInfo = self.extractMethodInfo(lang, tempContent[match.start(): match.end()])
-                methodBoundary = AnalyzerHelper().findMethodBoundary(lang, tempContent[match.start():])
+        while match != None:
+            # print("-------Match at begin % s, end % s " % (match.start(), match.end()),tempContent[match.start():match.end()])
+            res = [
+                ele
+                for ele in ["new", "return"]
+                if (ele in tempContent[match.start() : match.end()])
+            ]
+            if res == False:
+                methodInfo = self.extractMethodInfo(
+                    lang, tempContent[match.start() : match.end()]
+                )
+                methodBoundary = AnalyzerHelper().findMethodBoundary(
+                    lang, tempContent[match.start() :]
+                )
 
-                variables = VariableAnalyzer().analyze(None , lang, tempContent[match.start(): (match.end() + methodBoundary)] )
-                #print(variables)
+                variables = VariableAnalyzer().analyze(
+                    None,
+                    lang,
+                    tempContent[match.start() : (match.end() + methodBoundary)],
+                )
+                # print(variables)
                 methodInfo.variables.extend(variables)
 
                 listOfMethods.append(methodInfo)
-                tempContent = tempContent[match.end() + methodBoundary:]
+                tempContent = tempContent[match.end() + methodBoundary :]
             else:
-                tempContent = tempContent[match.end():]
+                tempContent = tempContent[match.end() :]
             match = re.search(self.pattern[lang], tempContent)
         return listOfMethods
 
     def extractMethodInfo(self, lang, inputString):
         methodInfo = MethodNode()
         splittedStr = inputString.split()
-        #print("----> ", inputString)
-        #print("---->>>>> ", splittedStr)
-        if "public" in splittedStr :
+        # print("----> ", inputString)
+        # print("---->>>>> ", splittedStr)
+        if "public" in splittedStr:
             methodInfo.accessLevel = AccessEnum.PUBLIC
             splittedStr = [item for item in splittedStr if item != "public"]
         elif "protected" in splittedStr:
@@ -67,7 +86,7 @@ class MethodAnalyzer(AbstractAnalyzer):
         if "static" in splittedStr:
             methodInfo.isStatic = True
             splittedStr = [item for item in splittedStr if item != "static"]
-                    
+
         if "@Override" in splittedStr:
             methodInfo.isFinal = True
             splittedStr = [item for item in splittedStr if item != "@Override"]
@@ -79,12 +98,12 @@ class MethodAnalyzer(AbstractAnalyzer):
             methodInfo.name = splittedStr[0]
             methodInfo.dataType = None
 
-        #print(inputString)
-        #print (variableInfo)
+        # print(inputString)
+        # print (variableInfo)
         return methodInfo
-        
-if __name__ == "__main__" :
+
+
+if __name__ == "__main__":
     print(sys.argv)
     methodAnalyzer = MethodAnalyzer()
-    print( methodAnalyzer.analyze(sys.argv[1], FileTypeEnum.JAVA) )
-
+    print(methodAnalyzer.analyze(sys.argv[1], FileTypeEnum.JAVA))

@@ -1,8 +1,10 @@
 import re
-from AbstractAnalyzer import * 
+from AbstractAnalyzer import *
 from ClassAnalyzer import *
 from ClassUmlDrawer import *
 from PythonUtilityClasses import SystemUtility as SU
+
+
 class FileAnalyzer(AbstractAnalyzer):
     def __init__(self) -> None:
         if not os.path.exists("../out"):
@@ -15,12 +17,13 @@ class FileAnalyzer(AbstractAnalyzer):
         for filePath in listOfFiles:
             classAnalyzer = ClassAnalyzer()
             language = self.detectLang(filePath)
-            if language != FileTypeEnum.UNDEFINED :
+            if language != FileTypeEnum.UNDEFINED:
                 print("- Analyzing: " + filePath, language)
                 listOfClasses = classAnalyzer.analyze(filePath, language)
                 self.drawUmls(listOfClasses)
             else:
                 print("- Undefined file extension : " + filePath)
+
     def drawUmls(self, listOfClassNodes):
         for classInfo in listOfClassNodes:
             umlDrawer = ClassUmlDrawer()
@@ -35,10 +38,9 @@ class FileAnalyzer(AbstractAnalyzer):
             return FileTypeEnum.CSHARP
         else:
             return FileTypeEnum.UNDEFINED
-        
-        
 
-if __name__ == "__main__" :
+
+if __name__ == "__main__":
     print(sys.argv)
     fileAnalyzer = FileAnalyzer()
     fileAnalyzer.analyze(sys.argv[1], None)
