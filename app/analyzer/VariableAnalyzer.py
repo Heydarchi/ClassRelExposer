@@ -2,8 +2,8 @@ import sys
 from pathlib import Path
 
 import re
-from AbstractAnalyzer import *
-from AnalyzerEntities import *
+from analyzer.AbstractAnalyzer import *
+from model.AnalyzerEntities import *
 from PythonUtilityClasses import FileReader as FR
 
 

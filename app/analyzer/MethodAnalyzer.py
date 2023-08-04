@@ -2,10 +2,9 @@ import sys
 from pathlib import Path
 
 import re
-from AbstractAnalyzer import *
-from AnalyzerEntities import *
-from AnalyzerHelper import *
-from VariableAnalyzer import *
+from analyzer.AbstractAnalyzer import *
+from analyzer.AnalyzerHelper import *
+from analyzer.VariableAnalyzer import *
 from PythonUtilityClasses import FileReader as FR
 
 

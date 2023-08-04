@@ -1,10 +1,9 @@
 import sys
 import re
-from AbstractAnalyzer import *
-from AnalyzerEntities import *
-from MethodAnalyzer import *
-from VariableAnalyzer import *
-from AnalyzerHelper import *
+from analyzer.AbstractAnalyzer import *
+from analyzer.MethodAnalyzer import *
+from analyzer.VariableAnalyzer import *
+from analyzer.AnalyzerHelper import *
 from PythonUtilityClasses import FileReader as FR
 
 
@@ -55,7 +54,7 @@ class ClassAnalyzer(AbstractAnalyzer):
     def analyze(self, filePath, lang, inputStr=None):
         if inputStr == None:
             fileReader = FR.FileReader()
-            fileContent = fileReader.readFile(filePath)
+            fileContent = fileReader.read_file(filePath)
         else:
             fileContent = inputStr
 
@@ -70,22 +69,22 @@ class ClassAnalyzer(AbstractAnalyzer):
                 print(
                     "-------Match at begin % s, end % s "
                     % (match.start(), match.end()),
-                    tempContent[match.start() : match.end()],
+                    tempContent[match.start(): match.end()],
                 )
                 classInfo.name = self.extractClassName(
-                    lang, tempContent[match.start() : match.end()]
+                    lang, tempContent[match.start(): match.end()]
                 )
                 # print("====> Class/Interface name: ",classInfo.name)
                 classInfo.relations = self.extractClassInheritances(
-                    lang, tempContent[match.start() : match.end()]
+                    lang, tempContent[match.start(): match.end()]
                 )
                 # print("====> classInfo.relations: ", classInfo.relations)
                 classInfo = self.extractClassSpec(
-                    tempContent[match.start() : match.end()], classInfo
+                    tempContent[match.start(): match.end()], classInfo
                 )
 
                 classBoundary = AnalyzerHelper().findClassBoundary(
-                    lang, tempContent[match.start() :]
+                    lang, tempContent[match.start():]
                 )
 
                 """### Find the variables & methods before the class's begin
@@ -100,14 +99,14 @@ class ClassAnalyzer(AbstractAnalyzer):
                 methods = MethodAnalyzer().analyze(
                     None,
                     lang,
-                    tempContent[match.start() : (match.end() + classBoundary)],
+                    tempContent[match.start(): (match.end() + classBoundary)],
                 )
                 classInfo.methods.extend(methods)
 
                 variables = VariableAnalyzer().analyze(
                     None,
                     lang,
-                    tempContent[match.start() : (match.end() + classBoundary)],
+                    tempContent[match.start(): (match.end() + classBoundary)],
                 )
                 classInfo.variables.extend(variables)
 
@@ -115,12 +114,12 @@ class ClassAnalyzer(AbstractAnalyzer):
                 classInfo.classes = classAnalyzer.analyze(
                     None,
                     lang,
-                    inputStr=tempContent[match.end() : (match.end() + classBoundary)],
+                    inputStr=tempContent[match.end(): (match.end() + classBoundary)],
                 )
 
                 listOfClasses.append(classInfo)
 
-                tempContent = tempContent[match.end() + classBoundary :]
+                tempContent = tempContent[match.end() + classBoundary:]
                 match = re.search(pattern, tempContent)
         # print (listOfClasses)
         return listOfClasses
@@ -129,7 +128,7 @@ class ClassAnalyzer(AbstractAnalyzer):
         print("++++++++++++ extractClassName:   ", inputStr)
         match = re.search(self.classNamePattern[lang], inputStr)
         if match != None:
-            className = inputStr[match.start() : match.end()].strip().split(" ")[1]
+            className = inputStr[match.start(): match.end()].strip().split(" ")[1]
             return className
         else:
             return None
@@ -141,7 +140,7 @@ class ClassAnalyzer(AbstractAnalyzer):
             # print("classExtendName: ", " ".join(inputStr[match.start():match.end()].replace("\n"," ").split()).strip())
             inherit = Inheritance(
                 name=" ".join(
-                    inputStr[match.start() : match.end()].replace("\n", " ").split()
+                    inputStr[match.start(): match.end()].replace("\n", " ").split()
                 )
                 .strip()
                 .split(" ")[1],
@@ -155,7 +154,7 @@ class ClassAnalyzer(AbstractAnalyzer):
             # print("classImplementName: ", " ".join(inputStr[match.start():match.end()].replace("\n"," ").split()).strip())
             inherit = Inheritance(
                 name=" ".join(
-                    inputStr[match.start() : match.end()].replace("\n", " ").split()
+                    inputStr[match.start(): match.end()].replace("\n", " ").split()
                 )
                 .strip()
                 .split(" ")[1],
