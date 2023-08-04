@@ -56,6 +56,7 @@ git submodule update --init --recursive
 ## **How to run**
 After the packages above are installed go to the Analyzer folder and run the command below
 ```
+cd app
 python FileAnalyzer.py [folder/file path]
 ```
 #### **To run sample** 
@@ -68,10 +69,10 @@ python FileAnalyzer.py ../sample
 
 <br/>
 
-### TODO:
-- [ ] Separate the variables  of Class & Method
-- [ ] Detect the cascade classes
-- [ ] Make a list of primitive variable types
-- [ ] Put the project architecture diagram
-- [ ] CSharp is semi tested 
-- [ ] Need to have recursive analysis 
+## Contributing
+
+Thank you for your interest in contributing to SELinux Explorer! We welcome and appreciate any contributions, whether it's bug reports, feature requests, code, documentation, or testing. Please refer to our [CONTRIBUTION.md](CONTRIBUTING.md) file for detailed guidelines on how to set up your development environment, check code style, run tests, and submit your changes.
+
+## Features and TODOs
+
+This project is under active development, and we're continuously working on improving and expanding its functionality. For a detailed list of features and tasks that we're planning to implement, please refer to the [TODO List](TODO.md) file. We welcome your contributions and feedback, so feel free
