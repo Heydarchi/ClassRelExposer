@@ -19,30 +19,35 @@ Feel free to create a ticket or send me a message/report.
 Generating the PNG files is based on [PlantUml](http://www.plantuml.com) that I put a jar version in this project.
 
 
-## Steps to utilize the project
-### 1- To run the project locally it's needed to have python 3.x and some other packages installed on your local machine
-&ensp;
-> Install Python 3.8 or new version
+## Installation
+#### Note : The 1st & 2nd steps can be skipped by running the `setup.sh` script.
 ```
-sudo apt install python3.8
+./setup.sh
 ```
 &ensp;
-> Install PythonIsPython3
-```
-sudo apt-get install python-is-python3 -y
-```
-&ensp;
-> Install graphviz
-```
-sudo apt-get install graphviz
-```
-<br/>
+1. Install Python 3.8 or a newer version, PythonIsPython3, Graphviz, and PyQt5:
 
-### 2- Clone the project & the submodule
+```
+sudo apt install python3.8 python-is-python3 graphviz -y
+```
+&ensp;
+
+2. Install python packages
+
+```
+pip install -r requirements.txt
+```
+&ensp;
+
+3. Clone the project and its submodule:
+
 ```
 git clone https://github.com/Heydarchi/ClassRelExposer.git
 ```
-Run the command below inside the cloned folder
+&ensp;
+
+4. Inside the cloned folder, run the following command to update the submodule:
+
 ```
 git submodule update --init --recursive
 ```
