@@ -17,9 +17,9 @@ class ClassAnalyzer(AbstractAnalyzer):
         self.initPatterns()
 
     def initPatterns(self):
-        self.pattern[
-            FileTypeEnum.CPP
-        ] = "(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?(class)\\s+[a-zA-Z0-9_\\s]*[:{;]"
+        self.pattern[FileTypeEnum.CPP] = [
+            "(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface)\\s+)[a-zA-Z0-9_]+\\s?(:)?\\s?(\\n)?[a-zA-Z0-9_\\s]*(\\n)?[{;](\\n)?"
+        ]
         self.pattern[FileTypeEnum.JAVA] = [
             "(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface|implements|extends)\\s+[a-zA-Z0-9_\\s]*)+[:{;]"
         ]
@@ -41,7 +41,7 @@ class ClassAnalyzer(AbstractAnalyzer):
         ] = "(implements)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]"
         self.classImplementPattern[
             FileTypeEnum.CSHARP
-        ] = "(:)\\s?(\\n)?[a-zA-Z0-9_\s]+\\s?\\n?\\s?[; {]"
+        ] = "(:)\\s?(\\n)?[a-zA-Z0-9_\\s]+\\s?\\n?\\s?[; {]"
 
         self.classExtendPattern[FileTypeEnum.CPP] = "(class)\\s+([a-zA-Z0-9_])*\\s+"
         self.classExtendPattern[
@@ -49,7 +49,7 @@ class ClassAnalyzer(AbstractAnalyzer):
         ] = "(extends)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]"
         self.classExtendPattern[
             FileTypeEnum.CSHARP
-        ] = "(:)\\s?(\\n)?[a-zA-Z0-9_\s]+\\s?\\n?\\s?[; {]"
+        ] = "(:)\\s?(\\n)?[a-zA-Z0-9_±\s]+\\s?\\n?\\s?[; {]"
 
     def analyze(self, filePath, lang, inputStr=None):
         if inputStr == None:
@@ -63,7 +63,7 @@ class ClassAnalyzer(AbstractAnalyzer):
         for pattern in self.pattern[lang]:
             tempContent = fileContent
             # print ("\nregx: ", pattern)
-            match = re.search(pattern, tempContent)
+            match = self.find_class_pattern(pattern, tempContent)
             while match != None:
                 classInfo = ClassNode()
                 print(
@@ -71,15 +71,15 @@ class ClassAnalyzer(AbstractAnalyzer):
                     % (match.start(), match.end()),
                     tempContent[match.start(): match.end()],
                 )
-                classInfo.name = self.extractClassName(
+                classInfo.name = self.extract_class_name(
                     lang, tempContent[match.start(): match.end()]
                 )
                 # print("====> Class/Interface name: ",classInfo.name)
-                classInfo.relations = self.extractClassInheritances(
+                classInfo.relations = self.extract_class_inheritances(
                     lang, tempContent[match.start(): match.end()]
                 )
                 # print("====> classInfo.relations: ", classInfo.relations)
-                classInfo = self.extractClassSpec(
+                classInfo = self.extract_class_spec(
                     tempContent[match.start(): match.end()], classInfo
                 )
 
@@ -124,7 +124,14 @@ class ClassAnalyzer(AbstractAnalyzer):
         # print (listOfClasses)
         return listOfClasses
 
-    def extractClassName(self, lang, inputStr):
+    def find_class_pattern(self, pattern, inputStr):
+        match = re.search(pattern, inputStr)
+        if match != None:
+            return match
+        else:
+            return None
+
+    def extract_class_name(self, lang, inputStr):
         print("++++++++++++ extractClassName:   ", inputStr)
         match = re.search(self.classNamePattern[lang], inputStr)
         if match != None:
@@ -133,7 +140,7 @@ class ClassAnalyzer(AbstractAnalyzer):
         else:
             return None
 
-    def extractClassInheritances(self, lang, inputStr):
+    def extract_class_inheritances(self, lang, inputStr):
         inheritance = list()
         match = re.search(self.classExtendPattern[lang], inputStr)
         if match != None:
@@ -164,7 +171,7 @@ class ClassAnalyzer(AbstractAnalyzer):
 
         return inheritance
 
-    def extractClassSpec(self, inputStr: str, classInfo: ClassNode):
+    def extract_class_spec(self, inputStr: str, classInfo: ClassNode):
         splittedStr = inputStr.split()
         if "public" in splittedStr:
             classInfo.accessLevel = AccessEnum.PUBLIC
