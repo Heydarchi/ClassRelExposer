@@ -1,5 +1,5 @@
 import os, sys
-from AnalyzerEntities import *
+from model.AnalyzerEntities import *
 from PythonUtilityClasses import FileWriter as FW
 
 
@@ -52,11 +52,17 @@ class ClassUmlDrawer:
 
         for relation in classInfo.relations:
             if relation.relationship == InheritanceEnum.DEPENDED:
-                plantUmlList.append(classInfo.name + " .....> " + relation.name)
+                plantUmlList.append(
+                    classInfo.name + " .....> " + self.fix_name_issue(relation.name)
+                )
             if relation.relationship == InheritanceEnum.IMPLEMENTED:
-                plantUmlList.append(classInfo.name + " .....> " + relation.name)
+                plantUmlList.append(
+                    classInfo.name + " .....> " + self.fix_name_issue(relation.name)
+                )
             if relation.relationship == InheritanceEnum.EXTENDED:
-                plantUmlList.append(classInfo.name + " -----|> " + relation.name)
+                plantUmlList.append(
+                    classInfo.name + " -----|> " + self.fix_name_issue(relation.name)
+                )
 
         for innerClass in classInfo.classes:
             plantUmlList.extend(self.dumpClass(innerClass))
@@ -82,7 +88,9 @@ class ClassUmlDrawer:
         variableUml = list()
         for variable in listOfVariables:
             if variable.dataType not in self.dataTypeToIgnore:
-                variableUml.append(className + " .....> " + variable.dataType)
+                variableUml.append(
+                    className + " .....> " + self.fix_name_issue(variable.dataType)
+                )
         return variableUml
 
     def generatePng(self, filepath):
@@ -90,7 +98,12 @@ class ClassUmlDrawer:
 
     def writeToFile(self, fileName, listOfStr):
         fw = FW.FileWriter()
-        fw.writeListToFile(fileName, listOfStr)
+        fw.write_list_to_file(fileName, listOfStr)
+
+    def fix_name_issue(self, name):
+        if ">" in name or "<" in name:
+            return '"' + name + '"'
+        return name
 
 
 if __name__ == "__main__":

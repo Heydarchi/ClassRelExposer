@@ -62,7 +62,7 @@ python FileAnalyzer.py [folder/file path]
 #### **To run sample** 
 
 ```
-python FileAnalyzer.py ../sample
+python FileAnalyzer.py test/test_files/java
 ```
 
 >The result can be found in the **out** folder
