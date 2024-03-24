@@ -1,5 +1,5 @@
 from unittest import TestCase
-from analyzer.ClassAnalyzer import ClassAnalyzer
+from analyzer.ClassAnalyzer import *
 from model.AnalyzerEntities import FileTypeEnum
 from PythonUtilityClasses.FileReader import FileReader
 import re
