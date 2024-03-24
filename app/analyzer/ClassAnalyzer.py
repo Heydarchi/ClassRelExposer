@@ -58,7 +58,7 @@ class ClassAnalyzer(AbstractAnalyzer):
         else:
             fileContent = inputStr
 
-        print("\n********************\n", str(fileContent).rstrip())
+        ##print("\n********************\n", str(fileContent).rstrip())
         listOfClasses = list()
         for pattern in self.pattern[lang]:
             tempContent = fileContent
