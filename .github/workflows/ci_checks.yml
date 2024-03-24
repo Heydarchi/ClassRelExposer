@@ -38,7 +38,7 @@ jobs:
       run: codespell --ignore-words=config/codespell_ignore.txt **/*
 
     - name: Run tests
-      run: pytest test/
+      run: pytest tests/
       working-directory: app
       env:
         PYTHONPATH: ${{ github.workspace }}/app
