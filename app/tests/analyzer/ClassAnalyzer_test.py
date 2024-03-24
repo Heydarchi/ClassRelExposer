@@ -1,11 +1,11 @@
-from unittest import TestCase
-from analyzer.ClassAnalyzer import *
+import unittest
+from analyzer.ClassAnalyzer import ClassAnalyzer
 from model.AnalyzerEntities import FileTypeEnum
 from PythonUtilityClasses.FileReader import FileReader
 import re
 
 
-class TestClassAnalyzer(TestCase):
+class TestClassAnalyzer(unittest.TestCase):
     def test_init_patterns(self):
         # Check if the variables are initialized properly
         classAnalyzer = ClassAnalyzer()
