@@ -25,32 +25,43 @@ Generating the PNG files is based on [PlantUml](http://www.plantuml.com) that I 
 ./setup.sh
 ```
 &ensp;
-1. Install Python 3.8 or a newer version, PythonIsPython3, Graphviz, and PyQt5:
 
-```
-sudo apt install python3.8 python-is-python3 graphviz -y
-```
-&ensp;
-
-2. Install python packages
-
-```
-pip install -r requirements.txt
-```
-&ensp;
-
-3. Clone the project and its submodule:
+1. Clone the project and its submodule (Leav it if you have already cloned the repo!):
 
 ```
 git clone https://github.com/Heydarchi/ClassRelExposer.git
 ```
 &ensp;
 
-4. Inside the cloned folder, run the following command to update the submodule:
+2. Inside the cloned folder, run the following command to update the submodule:
 
 ```
 git submodule update --init --recursive
 ```
+
+3. Install Python 3.8 or a newer version, PythonIsPython3, Graphviz, and PyQt5:
+
+```
+sudo apt install python3 python-is-python3 graphviz python3-venv -y
+```
+&ensp;
+
+4. Create & Activate Virtual Environment 
+
+```
+python3 -m venv venv
+source venv/bin/activate
+```
+&ensp;
+
+5. Install python packages
+
+```
+pip install -r requirements.txt
+```
+&ensp;
+
+
 <br/>
 
 ## **How to run**

@@ -15,15 +15,15 @@ class MethodAnalyzer(AbstractAnalyzer):
         self.initPatterns()
 
     def initPatterns(self):
-        self.pattern[
-            FileTypeEnum.CPP
-        ] = "[\\s;\\n{}(::)]([a-zA-Z0-9_<>])*\\s?\\(([a-zA-Z0-9_,\\s<>]|(\\s\\*)|(\\*\\s))*\\)\\s?[{;:\\n\\r].*"
-        self.pattern[
-            FileTypeEnum.JAVA
-        ] = "(@[a-zA-Z0-9_]+[\\s+|\\n]+)?[\\s;\\n{}}(::)].*[(public|private|protected)\\s+|(static)\\s+]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?\\("
-        self.pattern[
-            FileTypeEnum.CSHARP
-        ] = "(@[a-zA-Z0-9_]+[\\s+|\\n]+)?[\\s;\\n{}}(::)].*[(public|private|protected)\\s+|(static)\\s+]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?\\("
+        self.pattern[FileTypeEnum.CPP] = (
+            "[\\s;\\n{}(::)]([a-zA-Z0-9_<>])*\\s?\\(([a-zA-Z0-9_,\\s<>]|(\\s\\*)|(\\*\\s))*\\)\\s?[{;:\\n\\r].*"
+        )
+        self.pattern[FileTypeEnum.JAVA] = (
+            "(@[a-zA-Z0-9_]+[\\s+|\\n]+)?[\\s;\\n{}}(::)].*[(public|private|protected)\\s+|(static)\\s+]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?\\("
+        )
+        self.pattern[FileTypeEnum.CSHARP] = (
+            "(@[a-zA-Z0-9_]+[\\s+|\\n]+)?[\\s;\\n{}}(::)].*[(public|private|protected)\\s+|(static)\\s+]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?\\("
+        )
 
     def analyze(self, filePath, lang, classStr=None):
         listOfMethods = list()

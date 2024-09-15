@@ -28,28 +28,28 @@ class ClassAnalyzer(AbstractAnalyzer):
         ]
 
         self.classNamePattern[FileTypeEnum.CPP] = "(class)\\s+([a-zA-Z0-9_])*\\s+"
-        self.classNamePattern[
-            FileTypeEnum.JAVA
-        ] = "(class|interface)\\s+([a-zA-Z0-9_])+\\s+"
-        self.classNamePattern[
-            FileTypeEnum.CSHARP
-        ] = "(class|interface)\\s+([a-zA-Z0-9_])+\\s?"
+        self.classNamePattern[FileTypeEnum.JAVA] = (
+            "(class|interface)\\s+([a-zA-Z0-9_])+\\s+"
+        )
+        self.classNamePattern[FileTypeEnum.CSHARP] = (
+            "(class|interface)\\s+([a-zA-Z0-9_])+\\s?"
+        )
 
         self.classImplementPattern[FileTypeEnum.CPP] = "(class)\\s+([a-zA-Z0-9_])*\\s+"
-        self.classImplementPattern[
-            FileTypeEnum.JAVA
-        ] = "(implements)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]"
-        self.classImplementPattern[
-            FileTypeEnum.CSHARP
-        ] = "(:)\\s?(\\n)?[a-zA-Z0-9_\\s]+\\s?\\n?\\s?[; {]"
+        self.classImplementPattern[FileTypeEnum.JAVA] = (
+            "(implements)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]"
+        )
+        self.classImplementPattern[FileTypeEnum.CSHARP] = (
+            "(:)\\s?(\\n)?[a-zA-Z0-9_\\s]+\\s?\\n?\\s?[; {]"
+        )
 
         self.classExtendPattern[FileTypeEnum.CPP] = "(class)\\s+([a-zA-Z0-9_])*\\s+"
-        self.classExtendPattern[
-            FileTypeEnum.JAVA
-        ] = "(extends)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]"
-        self.classExtendPattern[
-            FileTypeEnum.CSHARP
-        ] = "(:)\\s?(\\n)?[a-zA-Z0-9_±\s]+\\s?\\n?\\s?[; {]"
+        self.classExtendPattern[FileTypeEnum.JAVA] = (
+            "(extends)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]"
+        )
+        self.classExtendPattern[FileTypeEnum.CSHARP] = (
+            "(:)\\s?(\\n)?[a-zA-Z0-9_±\s]+\\s?\\n?\\s?[; {]"
+        )
 
     def analyze(self, filePath, lang, inputStr=None):
         if inputStr == None:
