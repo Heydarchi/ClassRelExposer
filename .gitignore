@@ -174,5 +174,5 @@ bin/*
 lib64
 pyvenv.cfg
 .idea/
-
+venv
 out/
