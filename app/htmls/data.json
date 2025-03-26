@@ -1,0 +1,71 @@
+{
+  "nodes": [
+    {
+      "id": "UserModule",
+      "type": "module",
+      "version": "1.0.0",
+      "linesOfCode": 700,
+      "classes": ["User", "Profile", "Auth"]
+    },
+    {
+      "id": "OrderModule",
+      "type": "module",
+      "version": "2.1.0",
+      "linesOfCode": 800,
+      "classes": ["Order", "Invoice"]
+    },
+
+    {
+      "id": "User",
+      "type": "class",
+      "attributes": ["id: Int", "name: String", "email: String"],
+      "methods": ["register()", "login()", "logout()"],
+      "linesOfCode": 300,
+      "module": "UserModule"
+    },
+    {
+      "id": "Profile",
+      "type": "class",
+      "attributes": ["userId: Int", "bio: String"],
+      "methods": ["updateProfile()", "deleteAccount()"],
+      "module": "UserModule"
+    },
+
+    {
+      "id": "Order",
+      "type": "class",
+      "attributes": ["orderId: Int", "totalAmount: Float"],
+      "methods": ["createOrder()", "cancelOrder()"],
+      "module": "OrderModule"
+    },
+    {
+      "id": "Invoice",
+      "type": "class",
+      "attributes": ["invoiceId: Int", "dueDate: Date"],
+      "methods": ["generateInvoice()", "sendInvoice()"],
+      "module": "OrderModule"
+    }
+  ],
+  "links": [
+    {
+      "source": "User",
+      "target": "Order",
+      "relation": "uses"
+    },
+    {
+      "source": "Order",
+      "target": "Invoice",
+      "relation": "contains"
+    },
+    {
+      "source": "UserModule",
+      "target": "OrderModule",
+      "relation": "imports"
+    },
+    {
+      "source": "Invoice",
+      "target": "User",
+      "relation": "references"
+    }
+  ]
+}
