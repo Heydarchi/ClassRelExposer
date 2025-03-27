@@ -1,17 +1,25 @@
 FROM python:3.10-slim
 
+# Set working directory
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+# Install system-level packages
+RUN apt-get update && \
+    apt-get install -y git  && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copy requirements.txt FIRST (for better caching)
+# Copy requirements early to leverage Docker cache
 COPY requirements.txt .
 
-# Then copy app code
-COPY ./app /app
-
+# Install Python packages
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
+# Copy rest of the app code
+COPY ./app /app
+
+# Expose the Flask port
 EXPOSE 5000
+
+# Run the Flask app
 CMD ["python", "app.py"]
