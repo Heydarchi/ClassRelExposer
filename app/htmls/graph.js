@@ -7,20 +7,34 @@ fetch('data.json')
   .catch(err => console.error('Error:', err));
 
 function initGraph(gData) {
+  const ARROW_SIZE = 6;
+  const ARROW_COLOR = '#ffffff';
+  const LINK_WIDTH = 0.5;
+  const LINK_COLOR = '#ffffff';
+
   const Graph = new ForceGraph3D(document.getElementById('3d-graph'))
-    .nodeThreeObject(createUMLNode)
-    .nodeLabel(getNodeLabel)
-    .linkLabel(getLinkLabel)
-    .linkDirectionalArrowLength(6)
-    .linkDirectionalArrowRelPos(1)
-    .graphData(gData);
+  .nodeThreeObject(createUMLNode)
+  .nodeLabel(getNodeLabel)
+  .linkLabel(getLinkLabel)
+  .linkDirectionalArrowLength(ARROW_SIZE)
+  .linkDirectionalArrowColor(ARROW_COLOR)
+  .linkDirectionalArrowRelPos(1)
+  .linkWidth(LINK_WIDTH)
+  .linkColor(LINK_COLOR)
+  .onNodeDragEnd(node => {
+    node.fx = node.x; // lock x
+    node.fy = node.y; // lock y
+    node.fz = node.z; // lock z
+  })
+  .graphData(gData);
+
 }
 
 // Explicitly creates a UML-styled node
 function createUMLNode(node) {
   const canvas = document.createElement('canvas');
-  canvas.width = 400;
-  canvas.height = 250;
+  canvas.width = 480;
+  canvas.height = 280;
   const ctx = canvas.getContext('2d');
 
   const marginLeft = 20;
@@ -34,7 +48,7 @@ function createUMLNode(node) {
   ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
   // Draw node name
-  ctx.font = 'bold 28px Arial';
+  ctx.font = 'bold 24px Arial';
   ctx.fillStyle = '#000';
   ctx.textAlign = 'center';
   ctx.fillText(node.id, canvas.width / 2, 30);
@@ -47,7 +61,7 @@ function createUMLNode(node) {
   let y = 60;
 
   if (node.type === 'module') {
-    ctx.font = '22px Arial';
+    ctx.font = '20px Arial';
     ctx.fillStyle = '#007bff';
     ctx.textAlign = 'left';
     ctx.fillText(`Version: ${node.version || 'N/A'}`, marginLeft, y);
@@ -59,7 +73,7 @@ function createUMLNode(node) {
     ctx.textAlign = 'left';
 
     // Attributes
-    ctx.font = '22px Arial';
+    ctx.font = '20px Arial';
     ctx.fillStyle = '#007bff';
 
     if (node.attributes) {
@@ -82,8 +96,11 @@ function createUMLNode(node) {
 
   // Create 3D plane with this canvas texture
   const texture = new THREE.CanvasTexture(canvas);
-  const material = new THREE.MeshBasicMaterial({ map: texture });
-  const geometry = new THREE.PlaneGeometry(40, 20);
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    side: THREE.DoubleSide // ✨ render both front and back
+  });
+    const geometry = new THREE.PlaneGeometry(40, 20);
   return new THREE.Mesh(geometry, material);
 }
 
@@ -108,3 +125,4 @@ function getLinkLabel(link) {
       Relation: ${link.relation}
     </div>`;
 }
+
