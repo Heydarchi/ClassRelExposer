@@ -24,7 +24,6 @@ class FileAnalyzer(AbstractAnalyzer):
                 print("- Undefined file extension : " + filePath)
         self.generateData(listOfClassNodes)
 
-
     def generateData(self, listOfClassNodes):
         dataGenerator = DataGenerator()
         dataGenerator.generateData(listOfClassNodes)

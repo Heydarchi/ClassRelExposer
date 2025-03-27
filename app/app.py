@@ -58,28 +58,31 @@ def upload_files():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
 
-@app.route('/list-json')
+
+@app.route("/list-json")
 def list_json():
-    json_files = [f for f in os.listdir(RESULT_FOLDER) if f.endswith('.json')]
+    json_files = [f for f in os.listdir(RESULT_FOLDER) if f.endswith(".json")]
     return jsonify(json_files)
 
-@app.route('/save-pos', methods=['POST'])
+
+@app.route("/save-pos", methods=["POST"])
 def save_positions():
     payload = request.get_json()
-    filename = payload.get('filename')
-    data = payload.get('data')
+    filename = payload.get("filename")
+    data = payload.get("data")
 
     if not filename or not data:
-        return jsonify({'status': 'error', 'message': 'Invalid payload'})
+        return jsonify({"status": "error", "message": "Invalid payload"})
 
     try:
         path = os.path.join(RESULT_FOLDER, filename)
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             import json
+
             json.dump(data, f, indent=2)
-        return jsonify({'status': 'ok'})
+        return jsonify({"status": "ok"})
     except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)})
+        return jsonify({"status": "error", "message": str(e)})
 
 
 if __name__ == "__main__":

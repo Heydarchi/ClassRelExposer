@@ -127,7 +127,7 @@ class DataGenerator:
 
         date_time = datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
 
-        filePath = "static/out/data" + date_time +".json"
+        filePath = "static/out/data" + date_time + ".json"
         self.writeToFile(filePath, json_output)
 
     def dumpClass(self, classInfo: ClassNode):
