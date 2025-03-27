@@ -1,0 +1,129 @@
+body {
+    margin: 0;
+    font-family: Arial;
+  }
+  
+  #controls {
+    padding: 10px;
+    background: #f0f0f0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  #main-container {
+    display: flex;
+    height: calc(100vh - 100px);
+  }
+  
+  /* LEFT PANEL */
+  #side-panel {
+    width: 300px;
+    min-width: 200px;
+    max-width: 400px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    overflow: auto;
+    resize: horizontal;
+    z-index: 1;
+  }
+  
+  /* MIDDLE SECTION (GRAPH + RIGHT PANEL) */
+  #graph-area {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+  }
+  
+  /* GRAPH */
+  #3d-graph {
+    flex: 1;
+    position: relative;
+    z-index: 0;
+    min-width: 0;
+  }
+  
+  /* RIGHT PANEL */
+/* 🔵 Floating Right Control Panel */
+#right-panel {
+    position: fixed;
+    top: 100px; /* below top bar */
+    right: 0;
+    width: 220px;
+    max-height: calc(100vh - 100px);
+    background-color: rgba(255, 255, 255, 0.95);
+    border-left: 1px solid #ccc;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 9999; /* top of everything */
+  }
+  
+  
+  #right-panel h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  /* LEFT PANEL ELEMENTS */
+  #panel-header,
+  #panel-list,
+  #panel-details {
+    margin-bottom: 20px;
+  }
+  
+  #panel-header select {
+    width: 100%;
+    padding: 5px;
+  }
+  
+  #panel-list ul {
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  #panel-list li {
+    padding: 4px 6px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  #panel-list li:hover {
+    background-color: #eee;
+  }
+  
+  #panel-details {
+    font-size: 14px;
+    background-color: #fff;
+    padding: 8px;
+    border: 1px solid #ccc;
+    height: 200px;
+    overflow-y: auto;
+  }
+  
+  /* COMMON ELEMENTS */
+  #cameraInfo {
+    font-size: 13px;
+    font-family: monospace;
+    background: #eee;
+    padding: 6px 12px;
+    border-radius: 5px;
+  }
+  
+  .btn {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+  }
+  
