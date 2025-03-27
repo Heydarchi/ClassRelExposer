@@ -1,5 +1,4 @@
 from analyzer.ClassAnalyzer import *
-from drawer.ClassUmlDrawer import *
 from PythonUtilityClasses import SystemUtility as SU
 from drawer.DataGenerator import *
 
@@ -21,15 +20,9 @@ class FileAnalyzer(AbstractAnalyzer):
                 print("- Analyzing: " + filePath, language)
                 listOfClasses = classAnalyzer.analyze(filePath, language)
                 listOfClassNodes.extend(listOfClasses)
-                # self.drawUmls(listOfClasses)
             else:
                 print("- Undefined file extension : " + filePath)
         self.generateData(listOfClassNodes)
-
-    def drawUmls(self, listOfClassNodes):
-        for classInfo in listOfClassNodes:
-            umlDrawer = ClassUmlDrawer()
-            umlDrawer.drawUml(classInfo)
 
     def generateData(self, listOfClassNodes):
         dataGenerator = DataGenerator()

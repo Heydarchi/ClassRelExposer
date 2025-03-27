@@ -19,7 +19,7 @@ class MethodAnalyzer(AbstractAnalyzer):
             "[\\s;\\n{}(::)]([a-zA-Z0-9_<>])*\\s?\\(([a-zA-Z0-9_,\\s<>]|(\\s\\*)|(\\*\\s))*\\)\\s?[{;:\\n\\r].*"
         )
         self.pattern[FileTypeEnum.JAVA] = (
-            "(@[a-zA-Z0-9_]+[\\s+|\\n]+)?[\\s;\\n{}}(::)].*[(public|private|protected)\\s+|(static)\\s+]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?\\("
+            "(public|private|protected)?\s*(static)?\s*(default)?\s*[\w\<\>\[\]]+\s+\w+\s*\([^\)]*\)\s*[{;]"
         )
         self.pattern[FileTypeEnum.CSHARP] = (
             "(@[a-zA-Z0-9_]+[\\s+|\\n]+)?[\\s;\\n{}}(::)].*[(public|private|protected)\\s+|(static)\\s+]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?\\("
@@ -34,37 +34,44 @@ class MethodAnalyzer(AbstractAnalyzer):
             tempContent = classStr
 
         # print ("\nregx: ", self.pattern[lang])
+        # print ("\ntempContent: ", tempContent)
         match = re.search(self.pattern[lang], tempContent)
         # if match != None:
-        #    print("\n-------Match at index % s, % s" % (match.start(), match.end()),str(fileContent)[match.start():match.end()])
+        #    print("\n-------Match at index % s, % s" % (match.start(), match.end()),str(tempContent)[match.start():match.end()])
         while match != None:
-            # print("-------Match at begin % s, end % s " % (match.start(), match.end()),tempContent[match.start():match.end()])
-            res = [
+            print(
+                "-------Match method at begin % s, end % s "
+                % (match.start(), match.end()),
+                tempContent[match.start() : match.end()],
+            )
+            """res = [
                 ele
                 for ele in ["new", "return"]
                 if (ele in tempContent[match.start() : match.end()])
             ]
-            if res == False:
-                methodInfo = self.extractMethodInfo(
-                    lang, tempContent[match.start() : match.end()]
-                )
-                methodBoundary = AnalyzerHelper().findMethodBoundary(
-                    lang, tempContent[match.start() :]
-                )
+            """
+            # if res == False:
+            methodInfo = self.extractMethodInfo(
+                lang, tempContent[match.start() : match.end()]
+            )
+            methodBoundary = AnalyzerHelper().findMethodBoundary(
+                lang, tempContent[match.start() :]
+            )
 
-                variables = VariableAnalyzer().analyze(
-                    None,
-                    lang,
-                    tempContent[match.start() : (match.end() + methodBoundary)],
-                )
-                # print(variables)
-                methodInfo.variables.extend(variables)
+            variables = VariableAnalyzer().analyze(
+                None,
+                lang,
+                tempContent[match.start() : (match.end() + methodBoundary)],
+            )
+            # print(variables)
+            methodInfo.variables.extend(variables)
 
-                listOfMethods.append(methodInfo)
-                tempContent = tempContent[match.end() + methodBoundary :]
-            else:
-                tempContent = tempContent[match.end() :]
+            listOfMethods.append(methodInfo)
+            tempContent = tempContent[match.end() + methodBoundary :]
+            # else:
+            #    tempContent = tempContent[match.end() :]
             match = re.search(self.pattern[lang], tempContent)
+        print(listOfMethods)
         return listOfMethods
 
     def extractMethodInfo(self, lang, inputString):

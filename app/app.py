@@ -34,9 +34,9 @@ def upload_folder():
         return jsonify({"status": "error", "message": str(e)})
 
 
-@app.route("/out/data.json")
-def data():
-    return send_from_directory(RESULT_FOLDER, "data.json")
+@app.route("/out/<path:filename>")
+def serve_output_file(filename):
+    return send_from_directory(RESULT_FOLDER, filename)
 
 
 @app.route("/upload-files", methods=["POST"])
@@ -54,6 +54,36 @@ def upload_files():
     try:
         fileAnalyzer = FileAnalyzer()
         fileAnalyzer.analyze(temp_folder, None)
+        return jsonify({"status": "ok"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
+
+
+@app.route("/list-json")
+def list_json():
+    json_files = [
+        f
+        for f in os.listdir(RESULT_FOLDER)
+        if (f.endswith(".json") and ".pos" not in f)
+    ]
+    return jsonify(json_files)
+
+
+@app.route("/save-pos", methods=["POST"])
+def save_positions():
+    payload = request.get_json()
+    filename = payload.get("filename")
+    data = payload.get("data")
+
+    if not filename or not data:
+        return jsonify({"status": "error", "message": "Invalid payload"})
+
+    try:
+        path = os.path.join(RESULT_FOLDER, filename)
+        with open(path, "w") as f:
+            import json
+
+            json.dump(data, f, indent=2)
         return jsonify({"status": "ok"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})

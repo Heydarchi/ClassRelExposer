@@ -1,12 +1,13 @@
+// === graph.js ===
 import * as THREE from 'https://esm.sh/three';
 import { setupPanel } from './panel.js';
+import { autoSavePositions, setCurrentGraphFile } from './ui.js';
 
 export const ARROW_SIZE = 6;
 export const ARROW_COLOR = '#ffffff';
 export const LINK_WIDTH = 0.5;
 export const LINK_COLOR = '#ffffff';
 
-// ✅ Use ForceGraph3D globally (no import)
 export const Graph = ForceGraph3D()(document.getElementById('3d-graph'))
   .nodeThreeObject(createUMLNode)
   .nodeLabel(getNodeLabel)
@@ -20,16 +21,49 @@ export const Graph = ForceGraph3D()(document.getElementById('3d-graph'))
     node.fx = node.x;
     node.fy = node.y;
     node.fz = node.z;
+    autoSavePositions();
   });
 
-export function loadGraphData() {
-  fetch('/out/data.json')
+export function loadGraphData(filename = 'data.json') {
+  setCurrentGraphFile(filename);
+
+  fetch('/out/' + filename)
     .then(res => res.json())
     .then(data => {
-      Graph.graphData(data);
-      setupPanel(data);
+      const baseName = filename.replace(/\.json$/, '');
+      const posFile = baseName + '.pos.json';
+
+      fetch('/out/' + posFile)
+        .then(posRes => {
+          if (!posRes.ok) throw new Error('No position file');
+          return posRes.json();
+        })
+        .then(posData => {
+          data.nodes.forEach(node => {
+            const saved = posData[node.id];
+            if (saved) {
+              node.x = saved.x;
+              node.y = saved.y;
+              node.z = saved.z;
+              node.fx = saved.x;
+              node.fy = saved.y;
+              node.fz = saved.z;
+            }
+          });
+        })
+        .catch(() => {
+          console.warn('No position file found for', filename);
+        })
+        .finally(() => {
+          Graph.graphData(data);
+          setupPanel(data);
+          const categorySelect = document.getElementById('categorySelect');
+          if (categorySelect) {
+            categorySelect.dispatchEvent(new Event('change'));
+          }
+        });
     })
-    .catch(err => console.error('Error loading data.json:', err));
+    .catch(err => console.error('Error loading', filename, ':', err));
 }
 
 function createUMLNode(node) {

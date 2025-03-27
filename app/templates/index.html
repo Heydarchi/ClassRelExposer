@@ -3,100 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <title>3D Class-Module Graph</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-    }
-
-    #controls {
-      padding: 10px;
-      background: #f0f0f0;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-    }
-
-    #main-container {
-      display: flex;
-      height: calc(100vh - 100px);
-    }
-
-    #side-panel {
-      width: 300px;
-      background-color: #f8f9fa;
-      border-right: 1px solid #ccc;
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-      overflow: auto;
-      resize: horizontal;
-    }
-
-    #panel-header, #panel-list, #panel-details {
-      margin-bottom: 20px;
-    }
-
-    #panel-header select {
-      width: 100%;
-      padding: 5px;
-    }
-
-    #panel-list ul {
-      list-style: none;
-      padding: 0;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    #panel-list li {
-      padding: 4px 6px;
-      cursor: pointer;
-      border-bottom: 1px solid #ddd;
-    }
-
-    #panel-list li:hover {
-      background-color: #eee;
-    }
-
-    #panel-details {
-      font-size: 14px;
-      background-color: #fff;
-      padding: 8px;
-      border: 1px solid #ccc;
-      height: 200px;
-      overflow-y: auto;
-    }
-
-    #3d-graph {
-      flex: 1;
-    }
-
-    #cameraInfo {
-      font-size: 13px;
-      font-family: monospace;
-      background: #eee;
-      padding: 6px 12px;
-      border-radius: 5px;
-    }
-
-    .btn {
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      background: #fff;
-      cursor: pointer;
-    }
-  </style>
+  <link rel="stylesheet" href="/static/style.css">
   <script src="//cdn.jsdelivr.net/npm/3d-force-graph"></script>
 </head>
 <body>
 
   <!-- Top Controls -->
   <div id="controls">
-    <input type="text" id="folderPath" placeholder="Enter full folder path..." size="50">
+    <input type="text" id="folderPath" placeholder="Enter full folder path..." />
     <button id="analyzeBtn" class="btn">Analyze</button>
+    <span id="status"></span>
+    <div id="cameraInfo"></div>
+  </div>
 
+  <!-- Main Layout: Side Panel + Graph -->
+  <div id="main-container">
+
+    <!-- Left Side Info Panel -->
+    <div id="side-panel">
+      <div id="json-select-container">
+        <label for="jsonFileSelect">Graph Data File:</label>
+        <select id="jsonFileSelect"></select>
+        <button id="refreshJsonListBtn" class="btn">⟳ Refresh</button>
+      </div>
+    
+      <div id="panel-header">
+        <label for="categorySelect">Category</label>
+        <select id="categorySelect">
+          <option value="class">Class</option>
+          <option value="module">Module</option>
+        </select>
+      </div>
+    
+      <div id="panel-list">
+        <strong>Items</strong>
+        <ul id="itemList"></ul>
+      </div>
+    
+      <div id="panel-details">
+        <strong>Details</strong>
+        <div id="itemDetails">Select an item to view details.</div>
+      </div>
+    </div>
+    
+
+    <!-- Graph Container (80% width) -->
+    <div id="graph-container">
+      <div id="3d-graph"></div>
+    </div>
+  </div>
+
+  <!-- Right Camera Control Panel -->
+  <div id="right-panel">
+    <h4>Camera Controls</h4>
     <button id="resetCamBtn" class="btn">Reset Camera</button>
     <button id="zoomInBtn" class="btn">Zoom In</button>
     <button id="zoomOutBtn" class="btn">Zoom Out</button>
@@ -106,39 +65,9 @@
     <button id="orbitRightBtn" class="btn">Orbit Right</button>
     <button id="rollLeftBtn" class="btn">Roll Left</button>
     <button id="rollRightBtn" class="btn">Roll Right</button>
-
-    <span id="status"></span>
-    <div id="cameraInfo"></div>
   </div>
 
-  <!-- Main Area: Left Panel + Graph -->
-  <div id="main-container">
-    <!-- Left Info Panel -->
-    <div id="side-panel">
-      <div id="panel-header">
-        <label for="categorySelect">Category</label>
-        <select id="categorySelect">
-          <option value="class">Class</option>
-          <option value="module">Module</option>
-        </select>
-      </div>
-
-      <div id="panel-list">
-        <strong>Items</strong>
-        <ul id="itemList"></ul>
-      </div>
-
-      <div id="panel-details">
-        <strong>Details</strong>
-        <div id="itemDetails">Select an item to view details.</div>
-      </div>
-    </div>
-
-    <!-- 3D Graph -->
-    <div id="3d-graph"></div>
-  </div>
-
-  <!-- JS Entry Point -->
+  <!-- Entry Point JS -->
   <script type="module" src="/static/ui.js"></script>
 </body>
 </html>
