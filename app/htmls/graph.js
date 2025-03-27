@@ -23,6 +23,8 @@ function createUMLNode(node) {
   canvas.height = 250;
   const ctx = canvas.getContext('2d');
 
+  const marginLeft = 20;
+
   // Background
   ctx.fillStyle = 'white';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -47,19 +49,22 @@ function createUMLNode(node) {
   if (node.type === 'module') {
     ctx.font = '22px Arial';
     ctx.fillStyle = '#007bff';
-    ctx.fillText(`Version: ${node.version || 'N/A'}`, 10, y);
+    ctx.textAlign = 'left';
+    ctx.fillText(`Version: ${node.version || 'N/A'}`, marginLeft, y);
     y += 26;
-    ctx.fillText(`Classes: ${(node.classes || []).length}`, 10, y);
+    ctx.fillText(`Classes: ${(node.classes || []).length}`, marginLeft, y);
   }
 
   if (node.type === 'class') {
+    ctx.textAlign = 'left';
+
     // Attributes
     ctx.font = '22px Arial';
     ctx.fillStyle = '#007bff';
 
     if (node.attributes) {
       node.attributes.forEach(attr => {
-        ctx.fillText(attr, 10, y);
+        ctx.fillText(attr, marginLeft, y);
         y += 26;
       });
     }
@@ -69,7 +74,7 @@ function createUMLNode(node) {
     if (node.methods) {
       y += 10;
       node.methods.forEach(method => {
-        ctx.fillText(method, 10, y);
+        ctx.fillText(method, marginLeft, y);
         y += 26;
       });
     }

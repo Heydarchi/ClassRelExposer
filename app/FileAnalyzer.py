@@ -1,7 +1,7 @@
 from analyzer.ClassAnalyzer import *
 from drawer.ClassUmlDrawer import *
 from PythonUtilityClasses import SystemUtility as SU
-
+from drawer.DataGenerator import *
 
 class FileAnalyzer(AbstractAnalyzer):
     def __init__(self) -> None:
@@ -12,20 +12,27 @@ class FileAnalyzer(AbstractAnalyzer):
         systemUtility = SU.SystemUtility()
         listOfFiles = systemUtility.get_list_of_files(targetPath, "*")
         print(listOfFiles)
+        listOfClassNodes = list()
         for filePath in listOfFiles:
             classAnalyzer = ClassAnalyzer()
             language = self.detectLang(filePath)
             if language != FileTypeEnum.UNDEFINED:
                 print("- Analyzing: " + filePath, language)
                 listOfClasses = classAnalyzer.analyze(filePath, language)
+                listOfClassNodes.extend(listOfClasses)
                 self.drawUmls(listOfClasses)
             else:
                 print("- Undefined file extension : " + filePath)
+        self.generateData(listOfClassNodes)
 
     def drawUmls(self, listOfClassNodes):
         for classInfo in listOfClassNodes:
             umlDrawer = ClassUmlDrawer()
             umlDrawer.drawUml(classInfo)
+
+    def generateData(self, listOfClassNodes):
+        dataGenerator = DataGenerator()
+        dataGenerator.generateData(listOfClassNodes)
 
     def detectLang(self, fileName):
         if ".java" in fileName:

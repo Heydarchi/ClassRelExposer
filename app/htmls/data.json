@@ -1,71 +1,88 @@
 {
   "nodes": [
-    {
-      "id": "UserModule",
-      "type": "module",
-      "version": "1.0.0",
-      "linesOfCode": 700,
-      "classes": ["User", "Profile", "Auth"]
-    },
-    {
-      "id": "OrderModule",
-      "type": "module",
-      "version": "2.1.0",
-      "linesOfCode": 800,
-      "classes": ["Order", "Invoice"]
-    },
-
-    {
-      "id": "User",
-      "type": "class",
-      "attributes": ["id: Int", "name: String", "email: String"],
-      "methods": ["register()", "login()", "logout()"],
-      "linesOfCode": 300,
-      "module": "UserModule"
-    },
-    {
-      "id": "Profile",
-      "type": "class",
-      "attributes": ["userId: Int", "bio: String"],
-      "methods": ["updateProfile()", "deleteAccount()"],
-      "module": "UserModule"
-    },
-
-    {
-      "id": "Order",
-      "type": "class",
-      "attributes": ["orderId: Int", "totalAmount: Float"],
-      "methods": ["createOrder()", "cancelOrder()"],
-      "module": "OrderModule"
-    },
-    {
-      "id": "Invoice",
-      "type": "class",
-      "attributes": ["invoiceId: Int", "dueDate: Date"],
-      "methods": ["generateInvoice()", "sendInvoice()"],
-      "module": "OrderModule"
-    }
+      {
+          "id": "CarDeviceProvisionedController",
+          "type": "class",
+          "attributes": [],
+          "methods": [],
+          "linesOfCode": null,
+          "complexity": null,
+          "module": null
+      },
+      {
+          "id": "TestClass",
+          "type": "class",
+          "attributes": [
+              "private InnerTestClass innerTC"
+          ],
+          "methods": [],
+          "linesOfCode": null,
+          "complexity": null,
+          "module": null
+      },
+      {
+          "id": "CarDeviceProvisionedControllerImpl",
+          "type": "class",
+          "attributes": [
+              "private Uri mUserSetupInProgressUri",
+              "private ContentObserver mCarSettingsObserver",
+              "private Test::Handler mMainHandler",
+              "private SecureSettings mSecureSettings",
+              "public AtomicBoolean mInitted"
+          ],
+          "methods": [],
+          "linesOfCode": null,
+          "complexity": null,
+          "module": null
+      },
+      {
+          "id": "Haha",
+          "type": "class",
+          "attributes": [],
+          "methods": [],
+          "linesOfCode": null,
+          "complexity": null,
+          "module": null
+      },
+      {
+          "id": "DeviceProvisionedControllerImpl",
+          "type": "class",
+          "attributes": [],
+          "methods": [],
+          "linesOfCode": null,
+          "complexity": null,
+          "module": null
+      },
+      {
+          "id": "DeviceProvisionedController",
+          "type": "class",
+          "attributes": [],
+          "methods": [],
+          "linesOfCode": null,
+          "complexity": null,
+          "module": null
+      }
   ],
   "links": [
-    {
-      "source": "User",
-      "target": "Order",
-      "relation": "uses"
-    },
-    {
-      "source": "Order",
-      "target": "Invoice",
-      "relation": "contains"
-    },
-    {
-      "source": "UserModule",
-      "target": "OrderModule",
-      "relation": "imports"
-    },
-    {
-      "source": "Invoice",
-      "target": "User",
-      "relation": "references"
-    }
+      {
+          "source": "CarDeviceProvisionedController",
+          "target": "DeviceProvisionedController",
+          "relation": "extended"
+      },
+      {
+          "source": "TestClass",
+          "target": "Haha",
+          "relation": "implemented"
+      },
+      {
+          "source": "CarDeviceProvisionedControllerImpl",
+          "target": "DeviceProvisionedControllerImpl",
+          "relation": "extended"
+      },
+      {
+          "source": "CarDeviceProvisionedControllerImpl",
+          "target": "CarDeviceProvisionedController",
+          "relation": "implemented"
+      }
   ]
 }
