@@ -1,4 +1,6 @@
+# requirements.txt
 -i https://pypi.python.org/simple/
+flask==2.2.5
 dataclass-wizard==0.22.2
 pylint==2.17.2
 black==24.3.0
