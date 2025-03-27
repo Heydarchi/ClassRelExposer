@@ -21,7 +21,8 @@ class FileAnalyzer(AbstractAnalyzer):
                 listOfClasses = classAnalyzer.analyze(filePath, language)
                 listOfClassNodes.extend(listOfClasses)
             else:
-                print("- Undefined file extension : " + filePath)
+                # print("- Undefined file extension : " + filePath)
+                pass
         self.generateData(listOfClassNodes)
 
     def generateData(self, listOfClassNodes):
@@ -35,6 +36,8 @@ class FileAnalyzer(AbstractAnalyzer):
             return FileTypeEnum.CPP
         elif ".cs" in fileName:
             return FileTypeEnum.CSHARP
+        elif ".kt" in fileName:
+            return FileTypeEnum.KOTLIN
         else:
             return FileTypeEnum.UNDEFINED
 

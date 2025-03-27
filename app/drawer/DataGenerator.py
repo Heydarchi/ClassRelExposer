@@ -32,7 +32,7 @@ class DataGenerator:
     def generateData(self, listOfClassNodes: ClassNode):
         dataList = list()
 
-        print(listOfClassNodes)
+        # print(listOfClassNodes)
 
         for node in listOfClassNodes:
 
@@ -49,6 +49,7 @@ class DataGenerator:
 
     def dumpClass(self, classInfo: ClassNode):
         classData = ClassData()
+        classData.package = classInfo.package
         classData.id = classInfo.name
 
         # Convert methods explicitly (currently empty, but future-proof)

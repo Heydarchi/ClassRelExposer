@@ -14,6 +14,7 @@ class ClassAnalyzer(AbstractAnalyzer):
         self.classInheritancePattern = dict()
         self.classImplementPattern = dict()
         self.classExtendPattern = dict()
+        self.patternPackageName = dict()
         self.initPatterns()
 
     def initPatterns(self):
@@ -27,12 +28,20 @@ class ClassAnalyzer(AbstractAnalyzer):
             "(\\;|\\{|\\})*(\\r|\\n)*\\s*(\\r|\\n)*(\\/\\/\\s?[a-zA-Z0-9_].*(\\r|\\n)?)?(\\r|\\n)?\\s?[(public|private)\\s+|(static)\\s+|(final)\\s+].*((class|interface)\\s+)[a-zA-Z0-9_]+\\s?(:)?\\s?(\\n)?[a-zA-Z0-9_\\s]*(\\n)?[{;](\\n)?"
         ]
 
+        self.pattern[FileTypeEnum.KOTLIN] = [
+            r"\b(class|interface)\s+\w+(\s*:\s*[^{\n]+)?\s*{"
+        ]
+
         self.classNamePattern[FileTypeEnum.CPP] = "(class)\\s+([a-zA-Z0-9_])*\\s+"
         self.classNamePattern[FileTypeEnum.JAVA] = (
             "(class|interface)\\s+([a-zA-Z0-9_])+\\s+"
         )
         self.classNamePattern[FileTypeEnum.CSHARP] = (
             "(class|interface)\\s+([a-zA-Z0-9_])+\\s?"
+        )
+
+        self.classNamePattern[FileTypeEnum.KOTLIN] = (
+            r"(class|interface)\s+([a-zA-Z0-9_]+)"
         )
 
         self.classImplementPattern[FileTypeEnum.CPP] = "(class)\\s+([a-zA-Z0-9_])*\\s+"
@@ -42,6 +51,7 @@ class ClassAnalyzer(AbstractAnalyzer):
         self.classImplementPattern[FileTypeEnum.CSHARP] = (
             "(:)\\s?(\\n)?[a-zA-Z0-9_\\s]+\\s?\\n?\\s?[; {]"
         )
+        self.classImplementPattern[FileTypeEnum.KOTLIN] = r":\s*[a-zA-Z0-9_.,\s]+"
 
         self.classExtendPattern[FileTypeEnum.CPP] = "(class)\\s+([a-zA-Z0-9_])*\\s+"
         self.classExtendPattern[FileTypeEnum.JAVA] = (
@@ -49,6 +59,15 @@ class ClassAnalyzer(AbstractAnalyzer):
         )
         self.classExtendPattern[FileTypeEnum.CSHARP] = (
             "(:)\\s?(\\n)?[a-zA-Z0-9_±\s]+\\s?\\n?\\s?[; {]"
+        )
+        self.classExtendPattern[FileTypeEnum.KOTLIN] = r":\s*[a-zA-Z0-9_.,\s]+"
+
+        self.patternPackageName[FileTypeEnum.JAVA] = (
+            r"^\s*package\s+([a-zA-Z0-9_.]+)\s*;"
+        )
+        self.patternPackageName[FileTypeEnum.KOTLIN] = r"^\s*package\s+([a-zA-Z0-9_.]+)"
+        self.patternPackageName[FileTypeEnum.CSHARP] = (
+            r"^\s*namespace\s+([a-zA-Z0-9_.]+)\s*[{]"
         )
 
     def analyze(self, filePath, lang, inputStr=None):
@@ -58,19 +77,25 @@ class ClassAnalyzer(AbstractAnalyzer):
         else:
             fileContent = inputStr
 
-        ##print("\n********************\n", str(fileContent).rstrip())
+        package_name = self.extract_package_name(lang, fileContent)
+        # print("\n********************\n", str(fileContent).rstrip())
         listOfClasses = list()
         for pattern in self.pattern[lang]:
             tempContent = fileContent
             # print ("\nregx: ", pattern)
+
             match = self.find_class_pattern(pattern, tempContent)
             while match != None:
                 classInfo = ClassNode()
-                print(
+                """print(
                     "-------Match at begin % s, end % s "
                     % (match.start(), match.end()),
                     tempContent[match.start() : match.end()],
                 )
+                """
+
+                classInfo.package = package_name
+
                 classInfo.name = self.extract_class_name(
                     lang, tempContent[match.start() : match.end()]
                 )
@@ -187,6 +212,16 @@ class ClassAnalyzer(AbstractAnalyzer):
             classInfo.isInterface = True
 
         return classInfo
+
+    def extract_package_name(self, lang, inputStr: str):
+        pattern = self.patternPackageName[lang]
+        if not pattern:
+            return None
+        match = re.search(pattern, inputStr)
+        if match != None:
+            # print("++++++++++++ extract_package_name:   ", inputStr[match.start() : match.end()].strip().split(" ")[1])
+            return inputStr[match.start() : match.end()].strip().split(" ")[1]
+        return None
 
 
 if __name__ == "__main__":
