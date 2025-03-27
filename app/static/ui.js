@@ -88,7 +88,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   resetCamBtn.addEventListener('click', () => {
-    Graph.cameraPosition({ x: 0, y: 0, z: 300 }, null, 1000);
+    const cam = Graph.camera();
+
+    // Reset camera position
+    Graph.cameraPosition({ x: 0, y: 0, z: 300 }, { x: 0, y: 0, z: 0 }, 1000);
+  
+    // Reset "up" vector (clears roll/tilt)
+    cam.up.set(0, 1, 0);
   });
 
   zoomInBtn.addEventListener('click', () => Graph.camera().position.z -= 50);

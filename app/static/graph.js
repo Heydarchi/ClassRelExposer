@@ -55,6 +55,12 @@ export function loadGraphData(filename = 'data.json') {
           console.warn('No position file found for', filename);
         })
         .finally(() => {
+          data.links = (data.links || []).filter(link =>
+            link &&
+            link.source && link.target && link.relation &&
+            data.nodes.find(n => n.id === link.source) &&
+            data.nodes.find(n => n.id === link.target)
+          );
           Graph.graphData(data);
           setupPanel(data);
           const categorySelect = document.getElementById('categorySelect');

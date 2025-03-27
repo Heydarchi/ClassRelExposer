@@ -80,6 +80,22 @@ python FileAnalyzer.py test/test_files/java
 
 <br/>
 
+## Docker
+
+
+### Build Docker
+
+```
+docker build -t kudsight .
+```
+
+### Run by Docker
+
+```
+docker run -it --network host  --rm   -v "$PWD/app/static/out:/app/static/out"   -v "$HOME/Projects/code:/mnt/code"   -p 5000:5000   kudsight
+```
+
+
 ## Contributing
 
 Thank you for your interest in contributing to SELinux Explorer! We welcome and appreciate any contributions, whether it's bug reports, feature requests, code, documentation, or testing. Please refer to our [CONTRIBUTION.md](CONTRIBUTING.md) file for detailed guidelines on how to set up your development environment, check code style, run tests, and submit your changes.
@@ -87,3 +103,5 @@ Thank you for your interest in contributing to SELinux Explorer! We welcome and 
 ## Features and TODOs
 
 This project is under active development, and we're continuously working on improving and expanding its functionality. For a detailed list of features and tasks that we're planning to implement, please refer to the [TODO List](TODO.md) file. We welcome your contributions and feedback, so feel free
+
+
