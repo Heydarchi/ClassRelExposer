@@ -24,6 +24,10 @@ class VariableAnalyzer(AbstractAnalyzer):
             "[\\s;\\n{}}(::)][(public|private|protected)\\s+|(static)\\s+|(final)\\s+|\(\s?]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?[;=]"
         )
 
+        self.pattern[FileTypeEnum.KOTLIN] = (
+            r"\b(val|var)\s+[\w_]+\s*(:\s*[\w<>\[\]?]+)?(\s*=\s*[^;\n]+)?"
+        )
+
     def analyze(self, filePath, lang, classStr=None):
         listOfVariables = list()
         if classStr == None:

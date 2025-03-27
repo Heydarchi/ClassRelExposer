@@ -25,6 +25,11 @@ class MethodAnalyzer(AbstractAnalyzer):
             "(@[a-zA-Z0-9_]+[\\s+|\\n]+)?[\\s;\\n{}}(::)].*[(public|private|protected)\\s+|(static)\\s+]?(([a-zA-Z0-9_<>])+::)?([a-zA-Z0-9_<>])+\\s+[a-zA-Z_,<>][a-zA-Z0-9_,<>]*\\s?[\\r\\n]?\\("
         )
 
+        self.pattern[FileTypeEnum.KOTLIN] = (
+            r"\bfun\s+[\w<>]+\s*\(.*?\)\s*(:\s*[\w<>]+)?\s*[{;]"
+        )
+
+
     def analyze(self, filePath, lang, classStr=None):
         listOfMethods = list()
         if classStr == None:

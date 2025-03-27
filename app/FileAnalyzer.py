@@ -35,6 +35,8 @@ class FileAnalyzer(AbstractAnalyzer):
             return FileTypeEnum.CPP
         elif ".cs" in fileName:
             return FileTypeEnum.CSHARP
+        elif ".kt" in fileName:
+            return FileTypeEnum.KOTLIN
         else:
             return FileTypeEnum.UNDEFINED
 
