@@ -1,7 +1,7 @@
 import os, sys
 from model.AnalyzerEntities import *
 from PythonUtilityClasses import FileWriter as FW
-
+from datetime import datetime
 import json
 from typing import List, Optional
 from dataclasses import dataclass, asdict
@@ -125,7 +125,9 @@ class DataGenerator:
         # print(self.graphData)
         json_output = self.graphData.to_json()
 
-        filePath = "static/out/data.json"
+        date_time = datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
+
+        filePath = "static/out/data" + date_time +".json"
         self.writeToFile(filePath, json_output)
 
     def dumpClass(self, classInfo: ClassNode):

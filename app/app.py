@@ -34,9 +34,9 @@ def upload_folder():
         return jsonify({"status": "error", "message": str(e)})
 
 
-@app.route("/out/data.json")
-def data():
-    return send_from_directory(RESULT_FOLDER, "data.json")
+@app.route("/out/<path:filename>")
+def serve_output_file(filename):
+    return send_from_directory(RESULT_FOLDER, filename)
 
 
 @app.route("/upload-files", methods=["POST"])
@@ -57,6 +57,11 @@ def upload_files():
         return jsonify({"status": "ok"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
+
+@app.route('/list-json')
+def list_json():
+    json_files = [f for f in os.listdir(RESULT_FOLDER) if f.endswith('.json')]
+    return jsonify(json_files)
 
 
 if __name__ == "__main__":

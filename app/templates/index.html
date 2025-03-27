@@ -21,6 +21,12 @@
 
     <!-- Left Side Info Panel -->
     <div id="side-panel">
+      <div id="json-select-container">
+        <label for="jsonFileSelect">Graph Data File:</label>
+        <select id="jsonFileSelect"></select>
+        <button id="refreshJsonListBtn" class="btn">⟳ Refresh</button>
+      </div>
+    
       <div id="panel-header">
         <label for="categorySelect">Category</label>
         <select id="categorySelect">
@@ -28,17 +34,18 @@
           <option value="module">Module</option>
         </select>
       </div>
-
+    
       <div id="panel-list">
         <strong>Items</strong>
         <ul id="itemList"></ul>
       </div>
-
+    
       <div id="panel-details">
         <strong>Details</strong>
         <div id="itemDetails">Select an item to view details.</div>
       </div>
     </div>
+    
 
     <!-- Graph Container (80% width) -->
     <div id="graph-container">

@@ -66,29 +66,66 @@ input[type="text"] {
   border-right: 1px solid #333;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 16px;
   overflow: auto;
   color: #ccc;
-
   position: relative;
   z-index: 1000;
 }
 
-#panel-header select {
+#json-select-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+#json-select-container label {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+#jsonFileSelect,
+#refreshJsonListBtn {
   width: 100%;
-  padding: 5px;
+  margin-bottom: 6px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #222;
+  color: #eee;
+}
+
+#panel-header {
+  margin-bottom: 14px;
+}
+
+#panel-header label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 6px;
+}
+
+#categorySelect {
+  width: 100%;
+  padding: 6px;
   background: #222;
   color: #eee;
   border: 1px solid #444;
   border-radius: 4px;
 }
 
+#panel-list strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
 #panel-list ul {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 10px 0;
   max-height: 200px;
   overflow-y: auto;
+  border-top: 1px solid #333;
 }
 
 #panel-list li {
@@ -108,7 +145,7 @@ input[type="text"] {
   padding: 8px;
   border: 1px solid #333;
   border-radius: 4px;
-  height: 200px;
+  min-height: 120px;
   overflow-y: auto;
 }
 

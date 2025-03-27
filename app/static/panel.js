@@ -1,10 +1,16 @@
 export function setupPanel(graphData) {
-    const categorySelect = document.getElementById('categorySelect');
+    const oldCategorySelect = document.getElementById('categorySelect');
     const itemList = document.getElementById('itemList');
     const itemDetails = document.getElementById('itemDetails');
   
+    // ⚠️ Prevent duplicate event listeners by replacing the old select element
+    const newCategorySelect = oldCategorySelect.cloneNode(true);
+    oldCategorySelect.parentNode.replaceChild(newCategorySelect, oldCategorySelect);
+  
     function updateItemList(category) {
       itemList.innerHTML = '';
+      itemDetails.innerHTML = 'Select an item to view details.';
+  
       const filtered = graphData.nodes.filter(node => node.type === category);
   
       filtered.forEach(node => {
@@ -26,12 +32,12 @@ export function setupPanel(graphData) {
       `;
     }
   
-    // Initial population
-    categorySelect.addEventListener('change', () => {
-      updateItemList(categorySelect.value);
-      itemDetails.innerHTML = 'Select an item to view details.';
+    // ✅ Bind event listener to the new <select> element
+    newCategorySelect.addEventListener('change', () => {
+      updateItemList(newCategorySelect.value);
     });
   
-    updateItemList(categorySelect.value); // default load
+    // ✅ Trigger initial list population
+    updateItemList(newCategorySelect.value);
   }
   

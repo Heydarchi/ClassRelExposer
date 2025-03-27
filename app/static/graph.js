@@ -6,7 +6,7 @@ export const ARROW_COLOR = '#ffffff';
 export const LINK_WIDTH = 0.5;
 export const LINK_COLOR = '#ffffff';
 
-// ✅ Use ForceGraph3D globally (no import)
+// Use ForceGraph3D globally (no import)
 export const Graph = ForceGraph3D()(document.getElementById('3d-graph'))
   .nodeThreeObject(createUMLNode)
   .nodeLabel(getNodeLabel)
@@ -22,14 +22,19 @@ export const Graph = ForceGraph3D()(document.getElementById('3d-graph'))
     node.fz = node.z;
   });
 
-export function loadGraphData() {
-  fetch('/out/data.json')
+export function loadGraphData(filename = 'data.json') {
+  fetch('/out/' + filename)
     .then(res => res.json())
     .then(data => {
       Graph.graphData(data);
       setupPanel(data);
+      // Trigger change event on the category select to update the left panel immediately
+      const categorySelect = document.getElementById('categorySelect');
+      if (categorySelect) {
+        categorySelect.dispatchEvent(new Event('change'));
+      }
     })
-    .catch(err => console.error('Error loading data.json:', err));
+    .catch(err => console.error('Error loading', filename, ':', err));
 }
 
 function createUMLNode(node) {

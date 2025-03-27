@@ -110,3 +110,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadGraphData(); // Initial load
 });
+
+// Function to load the list of JSON files from the backend
+function loadJsonFileList() {
+    fetch('/list-json')
+      .then(response => response.json())
+      .then(files => {
+        const jsonSelect = document.getElementById('jsonFileSelect');
+        jsonSelect.innerHTML = '';
+  
+        files.forEach(file => {
+          const option = document.createElement('option');
+          option.value = file;
+          option.textContent = file;
+          jsonSelect.appendChild(option);
+        });
+      })
+      .catch(err => console.error('Error fetching JSON file list:', err));
+  }
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    // Refresh JSON list on button click
+    const refreshBtn = document.getElementById('refreshJsonListBtn');
+    refreshBtn.addEventListener('click', loadJsonFileList);
+  
+    // Load list on startup
+    loadJsonFileList();
+  
+    const jsonSelect = document.getElementById('jsonFileSelect');
+    jsonSelect.addEventListener('change', () => {
+      const selectedFile = jsonSelect.value;
+      loadGraphData(selectedFile);
+    });
+  
+    // Optional: auto-load the first file after list loads
+    setTimeout(() => {
+      const selected = document.getElementById('jsonFileSelect');
+      if (selected && selected.value) loadGraphData(selected.value);
+    }, 500);
+  });
+  
