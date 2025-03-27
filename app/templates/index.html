@@ -9,12 +9,26 @@
       padding: 10px;
       background: #f0f0f0;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 10px;
     }
     #3d-graph {
       width: 100%;
-      height: calc(100vh - 60px);
+      height: calc(100vh - 100px);
+    }
+    #cameraInfo {
+      font-size: 13px;
+      font-family: monospace;
+      background: #eee;
+      padding: 6px 12px;
+      border-radius: 5px;
+    }
+    .btn {
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
     }
   </style>
   <script src="//cdn.jsdelivr.net/npm/3d-force-graph"></script>
@@ -23,15 +37,24 @@
 
   <div id="controls">
     <input type="text" id="folderPath" placeholder="Enter full folder path..." size="50">
-    <button id="analyzeBtn">Analyze</button>
+    <button id="analyzeBtn" class="btn">Analyze</button>
+
+    <button id="resetCamBtn" class="btn">Reset Camera</button>
+    <button id="zoomInBtn" class="btn">Zoom In</button>
+    <button id="zoomOutBtn" class="btn">Zoom Out</button>
+    <button id="tiltUpBtn" class="btn">Tilt Up</button>
+    <button id="tiltDownBtn" class="btn">Tilt Down</button>
+    <button id="orbitLeftBtn" class="btn">Orbit Left</button>
+    <button id="orbitRightBtn" class="btn">Orbit Right</button>
+    <button id="rollLeftBtn" class="btn">Roll Left</button>
+    <button id="rollRightBtn" class="btn">Roll Right</button>
+
     <span id="status"></span>
+    <div id="cameraInfo"></div>
   </div>
-  
-  
 
   <div id="3d-graph"></div>
 
-  <!-- Load modules -->
   <script type="module" src="/static/ui.js"></script>
 </body>
 </html>
