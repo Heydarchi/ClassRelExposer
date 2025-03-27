@@ -1,0 +1,41 @@
+{
+  "nodes": [
+      {
+          "id": "Program",
+          "type": "class",
+          "attributes": [
+              "private uint i",
+              "private UniTyio tert"
+          ],
+          "methods": [],
+          "linesOfCode": null,
+          "complexity": null,
+          "module": null
+      },
+      {
+          "id": "SDL",
+          "type": "class",
+          "attributes": [],
+          "methods": [],
+          "linesOfCode": null,
+          "complexity": null,
+          "module": null
+      },
+      {
+          "id": "ILibrary",
+          "type": "class",
+          "attributes": [],
+          "methods": [],
+          "linesOfCode": null,
+          "complexity": null,
+          "module": null
+      }
+  ],
+  "links": [
+      {
+          "source": "SDL",
+          "target": "ILibrary",
+          "relation": "extended"
+      }
+  ]
+}
