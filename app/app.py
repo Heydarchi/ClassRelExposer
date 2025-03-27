@@ -61,7 +61,11 @@ def upload_files():
 
 @app.route("/list-json")
 def list_json():
-    json_files = [f for f in os.listdir(RESULT_FOLDER) if f.endswith(".json")]
+    json_files = [
+        f
+        for f in os.listdir(RESULT_FOLDER)
+        if (f.endswith(".json") and ".pos" not in f)
+    ]
     return jsonify(json_files)
 
 
