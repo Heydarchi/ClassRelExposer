@@ -21,7 +21,7 @@ class FileAnalyzer(AbstractAnalyzer):
                 print("- Analyzing: " + filePath, language)
                 listOfClasses = classAnalyzer.analyze(filePath, language)
                 listOfClassNodes.extend(listOfClasses)
-                #self.drawUmls(listOfClasses)
+                # self.drawUmls(listOfClasses)
             else:
                 print("- Undefined file extension : " + filePath)
         self.generateData(listOfClassNodes)
