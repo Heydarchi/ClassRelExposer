@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Class-Module Graph</title>
+  <style>
+    body { margin: 0; font-family: Arial; }
+    #controls {
+      padding: 10px;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #3d-graph {
+      width: 100%;
+      height: calc(100vh - 60px);
+    }
+  </style>
+  <script src="//cdn.jsdelivr.net/npm/3d-force-graph"></script>
+</head>
+<body>
+
+  <div id="controls">
+    <input type="text" id="folderPath" placeholder="Enter full folder path..." size="50">
+    <button id="analyzeBtn">Analyze</button>
+    <span id="status"></span>
+  </div>
+  
+  
+
+  <div id="3d-graph"></div>
+
+  <!-- Load modules -->
+  <script type="module" src="/static/ui.js"></script>
+</body>
+</html>

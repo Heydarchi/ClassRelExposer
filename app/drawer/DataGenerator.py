@@ -125,7 +125,7 @@ class DataGenerator:
         # print(self.graphData)
         json_output = self.graphData.to_json()
 
-        filePath = "../out/data_uml.json"
+        filePath = "static/out/data.json"
         self.writeToFile(filePath, json_output)
 
     def dumpClass(self, classInfo: ClassNode):

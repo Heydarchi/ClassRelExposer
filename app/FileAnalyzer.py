@@ -6,8 +6,8 @@ from drawer.DataGenerator import *
 
 class FileAnalyzer(AbstractAnalyzer):
     def __init__(self) -> None:
-        if not os.path.exists("../out"):
-            os.makedirs("../out")
+        if not os.path.exists("static/out"):
+            os.makedirs("static/out")
 
     def analyze(self, targetPath, pattern):
         systemUtility = SU.SystemUtility()
@@ -21,7 +21,7 @@ class FileAnalyzer(AbstractAnalyzer):
                 print("- Analyzing: " + filePath, language)
                 listOfClasses = classAnalyzer.analyze(filePath, language)
                 listOfClassNodes.extend(listOfClasses)
-                self.drawUmls(listOfClasses)
+                #self.drawUmls(listOfClasses)
             else:
                 print("- Undefined file extension : " + filePath)
         self.generateData(listOfClassNodes)
