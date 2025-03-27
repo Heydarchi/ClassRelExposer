@@ -32,7 +32,7 @@ class DataGenerator:
     def generateData(self, listOfClassNodes: ClassNode):
         dataList = list()
 
-        #print(listOfClassNodes)
+        # print(listOfClassNodes)
 
         for node in listOfClassNodes:
 

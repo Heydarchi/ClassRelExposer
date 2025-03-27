@@ -62,9 +62,13 @@ class ClassAnalyzer(AbstractAnalyzer):
         )
         self.classExtendPattern[FileTypeEnum.KOTLIN] = r":\s*[a-zA-Z0-9_.,\s]+"
 
-        self.patternPackageName[FileTypeEnum.JAVA] = r'^\s*package\s+([a-zA-Z0-9_.]+)\s*;'
-        self.patternPackageName[FileTypeEnum.KOTLIN] = r'^\s*package\s+([a-zA-Z0-9_.]+)'
-        self.patternPackageName[FileTypeEnum.CSHARP] = r'^\s*namespace\s+([a-zA-Z0-9_.]+)\s*[{]'
+        self.patternPackageName[FileTypeEnum.JAVA] = (
+            r"^\s*package\s+([a-zA-Z0-9_.]+)\s*;"
+        )
+        self.patternPackageName[FileTypeEnum.KOTLIN] = r"^\s*package\s+([a-zA-Z0-9_.]+)"
+        self.patternPackageName[FileTypeEnum.CSHARP] = (
+            r"^\s*namespace\s+([a-zA-Z0-9_.]+)\s*[{]"
+        )
 
     def analyze(self, filePath, lang, inputStr=None):
         if inputStr == None:
@@ -74,22 +78,21 @@ class ClassAnalyzer(AbstractAnalyzer):
             fileContent = inputStr
 
         package_name = self.extract_package_name(lang, fileContent)
-        #print("\n********************\n", str(fileContent).rstrip())
+        # print("\n********************\n", str(fileContent).rstrip())
         listOfClasses = list()
         for pattern in self.pattern[lang]:
             tempContent = fileContent
             # print ("\nregx: ", pattern)
 
-            
             match = self.find_class_pattern(pattern, tempContent)
             while match != None:
                 classInfo = ClassNode()
-                '''print(
+                """print(
                     "-------Match at begin % s, end % s "
                     % (match.start(), match.end()),
                     tempContent[match.start() : match.end()],
                 )
-                '''
+                """
 
                 classInfo.package = package_name
 
@@ -210,17 +213,15 @@ class ClassAnalyzer(AbstractAnalyzer):
 
         return classInfo
 
-
     def extract_package_name(self, lang, inputStr: str):
         pattern = self.patternPackageName[lang]
         if not pattern:
             return None
         match = re.search(pattern, inputStr)
         if match != None:
-            #print("++++++++++++ extract_package_name:   ", inputStr[match.start() : match.end()].strip().split(" ")[1])
+            # print("++++++++++++ extract_package_name:   ", inputStr[match.start() : match.end()].strip().split(" ")[1])
             return inputStr[match.start() : match.end()].strip().split(" ")[1]
         return None
-
 
 
 if __name__ == "__main__":
