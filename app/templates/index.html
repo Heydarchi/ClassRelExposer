@@ -3,22 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <title>3D Class-Module Graph</title>
-  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="/static/style.css">
   <script src="//cdn.jsdelivr.net/npm/3d-force-graph"></script>
 </head>
 <body>
 
   <!-- Top Controls -->
   <div id="controls">
-    <input type="text" id="folderPath" placeholder="Enter full folder path..." size="50">
+    <input type="text" id="folderPath" placeholder="Enter full folder path..." />
     <button id="analyzeBtn" class="btn">Analyze</button>
     <span id="status"></span>
     <div id="cameraInfo"></div>
   </div>
 
-  <!-- Main Layout: Left Panel + Graph -->
+  <!-- Main Layout: Side Panel + Graph -->
   <div id="main-container">
-    <!-- Left Info Panel -->
+
+    <!-- Left Side Info Panel -->
     <div id="side-panel">
       <div id="panel-header">
         <label for="categorySelect">Category</label>
@@ -39,11 +40,13 @@
       </div>
     </div>
 
-    <!-- 3D Graph fills remaining space -->
-    <div id="3d-graph"></div>
+    <!-- Graph Container (80% width) -->
+    <div id="graph-container">
+      <div id="3d-graph"></div>
+    </div>
   </div>
 
-  <!-- ✅ Floating Right Panel -->
+  <!-- Right Camera Control Panel -->
   <div id="right-panel">
     <h4>Camera Controls</h4>
     <button id="resetCamBtn" class="btn">Reset Camera</button>
@@ -57,7 +60,7 @@
     <button id="rollRightBtn" class="btn">Roll Right</button>
   </div>
 
-  <!-- App Logic -->
+  <!-- Entry Point JS -->
   <script type="module" src="/static/ui.js"></script>
 </body>
 </html>
