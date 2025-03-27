@@ -108,5 +108,5 @@ document.addEventListener('DOMContentLoaded', () => {
     cameraInfo.textContent = `Camera: x=${cam.position.x.toFixed(1)}, y=${cam.position.y.toFixed(1)}, z=${cam.position.z.toFixed(1)} | up: (${cam.up.x.toFixed(2)}, ${cam.up.y.toFixed(2)}, ${cam.up.z.toFixed(2)})`;
   }, 500);
 
-  loadGraphData();
+  loadGraphData(); // Initial load
 });

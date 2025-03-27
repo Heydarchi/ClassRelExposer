@@ -1,10 +1,12 @@
 import * as THREE from 'https://esm.sh/three';
+import { setupPanel } from './panel.js';
 
 export const ARROW_SIZE = 6;
 export const ARROW_COLOR = '#ffffff';
 export const LINK_WIDTH = 0.5;
 export const LINK_COLOR = '#ffffff';
 
+// ✅ Use ForceGraph3D globally (no import)
 export const Graph = ForceGraph3D()(document.getElementById('3d-graph'))
   .nodeThreeObject(createUMLNode)
   .nodeLabel(getNodeLabel)
@@ -25,6 +27,7 @@ export function loadGraphData() {
     .then(res => res.json())
     .then(data => {
       Graph.graphData(data);
+      setupPanel(data);
     })
     .catch(err => console.error('Error loading data.json:', err));
 }
@@ -72,6 +75,7 @@ function createUMLNode(node) {
         y += 26;
       });
     }
+
     ctx.fillStyle = '#e44c1a';
     if (node.methods) {
       y += 10;
@@ -83,7 +87,10 @@ function createUMLNode(node) {
   }
 
   const texture = new THREE.CanvasTexture(canvas);
-  const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    side: THREE.DoubleSide
+  });
   const geometry = new THREE.PlaneGeometry(40, 20);
   return new THREE.Mesh(geometry, material);
 }
