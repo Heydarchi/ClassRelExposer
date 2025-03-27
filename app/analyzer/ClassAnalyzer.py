@@ -38,9 +38,10 @@ class ClassAnalyzer(AbstractAnalyzer):
         self.classNamePattern[FileTypeEnum.CSHARP] = (
             "(class|interface)\\s+([a-zA-Z0-9_])+\\s?"
         )
-        
-        self.classNamePattern[FileTypeEnum.KOTLIN] = r"(class|interface)\s+([a-zA-Z0-9_]+)"
 
+        self.classNamePattern[FileTypeEnum.KOTLIN] = (
+            r"(class|interface)\s+([a-zA-Z0-9_]+)"
+        )
 
         self.classImplementPattern[FileTypeEnum.CPP] = "(class)\\s+([a-zA-Z0-9_])*\\s+"
         self.classImplementPattern[FileTypeEnum.JAVA] = (
@@ -51,7 +52,6 @@ class ClassAnalyzer(AbstractAnalyzer):
         )
         self.classImplementPattern[FileTypeEnum.KOTLIN] = r":\s*[a-zA-Z0-9_.,\s]+"
 
-
         self.classExtendPattern[FileTypeEnum.CPP] = "(class)\\s+([a-zA-Z0-9_])*\\s+"
         self.classExtendPattern[FileTypeEnum.JAVA] = (
             "(extends)\\s+([a-zA-Z0-9_])+[:{;\\r\\n\\s]"
@@ -60,7 +60,6 @@ class ClassAnalyzer(AbstractAnalyzer):
             "(:)\\s?(\\n)?[a-zA-Z0-9_±\s]+\\s?\\n?\\s?[; {]"
         )
         self.classExtendPattern[FileTypeEnum.KOTLIN] = r":\s*[a-zA-Z0-9_.,\s]+"
-
 
     def analyze(self, filePath, lang, inputStr=None):
         if inputStr == None:

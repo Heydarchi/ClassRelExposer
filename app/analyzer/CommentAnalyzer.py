@@ -27,11 +27,23 @@ class CommentAnalyzer(AbstractAnalyzer):
             '(\\").*[\\r\\na-zA-Z0-9\\s].*(\\")',
         ]
 
+        self.pattern[FileTypeEnum.KOTLIN] = [
+            r"(//).*[^\n\r]*",  # single-line comment
+            r"(?s)/\*.*?\*/",  # multi-line comment (non-greedy with DOTALL)
+            r'"(?:\\.|[^"\\])*"',  # string literals (avoid replacing inside them)
+        ]
+
         self.pattern[FileTypeEnum.CPP] = ["\n", "/*"]
         self.pattern[FileTypeEnum.JAVA] = ["\n", "/*"]
 
         self.replaceByStr[FileTypeEnum.CPP] = ["//@", "/*@*/", '"@"']
         self.replaceByStr[FileTypeEnum.JAVA] = ["//@", "/*@*/", '"@"']
+
+        self.replaceByStr[FileTypeEnum.KOTLIN] = [
+            "//@",  # single-line
+            "/*@*/",  # multi-line
+            '"@"',  # string
+        ]
 
     def analyze(self, filePath, lang):
         fileReader = FR.FileReader()

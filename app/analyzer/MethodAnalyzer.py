@@ -29,7 +29,6 @@ class MethodAnalyzer(AbstractAnalyzer):
             r"\bfun\s+[\w<>]+\s*\(.*?\)\s*(:\s*[\w<>]+)?\s*[{;]"
         )
 
-
     def analyze(self, filePath, lang, classStr=None):
         listOfMethods = list()
         if classStr == None:
