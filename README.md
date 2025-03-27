@@ -39,10 +39,10 @@ git clone https://github.com/Heydarchi/ClassRelExposer.git
 git submodule update --init --recursive
 ```
 
-3. Install Python 3.8 or a newer version, PythonIsPython3, Graphviz, and PyQt5:
+1. Install Python 3.8 or a newer version, PythonIsPython3:
 
 ```
-sudo apt install python3 python-is-python3 graphviz python3-venv -y
+sudo apt install python3 python-is-python3  python3-venv -y
 ```
 &ensp;
 
