@@ -21,7 +21,8 @@ class FileAnalyzer(AbstractAnalyzer):
                 listOfClasses = classAnalyzer.analyze(filePath, language)
                 listOfClassNodes.extend(listOfClasses)
             else:
-                print("- Undefined file extension : " + filePath)
+                #print("- Undefined file extension : " + filePath)
+                pass
         self.generateData(listOfClassNodes)
 
     def generateData(self, listOfClassNodes):
