@@ -1,19 +1,11 @@
 {
   "nodes": [
       {
-          "id": "CarDeviceProvisionedController",
-          "type": "class",
-          "attributes": [],
-          "methods": [],
-          "linesOfCode": null,
-          "complexity": null,
-          "module": null
-      },
-      {
-          "id": "TestClass",
+          "id": "Program",
           "type": "class",
           "attributes": [
-              "private InnerTestClass innerTC"
+              "private uint i",
+              "private UniTyio tert"
           ],
           "methods": [],
           "linesOfCode": null,
@@ -21,22 +13,7 @@
           "module": null
       },
       {
-          "id": "CarDeviceProvisionedControllerImpl",
-          "type": "class",
-          "attributes": [
-              "private Uri mUserSetupInProgressUri",
-              "private ContentObserver mCarSettingsObserver",
-              "private Test::Handler mMainHandler",
-              "private SecureSettings mSecureSettings",
-              "public AtomicBoolean mInitted"
-          ],
-          "methods": [],
-          "linesOfCode": null,
-          "complexity": null,
-          "module": null
-      },
-      {
-          "id": "Haha",
+          "id": "SDL",
           "type": "class",
           "attributes": [],
           "methods": [],
@@ -45,16 +22,7 @@
           "module": null
       },
       {
-          "id": "DeviceProvisionedControllerImpl",
-          "type": "class",
-          "attributes": [],
-          "methods": [],
-          "linesOfCode": null,
-          "complexity": null,
-          "module": null
-      },
-      {
-          "id": "DeviceProvisionedController",
+          "id": "ILibrary",
           "type": "class",
           "attributes": [],
           "methods": [],
@@ -65,24 +33,9 @@
   ],
   "links": [
       {
-          "source": "CarDeviceProvisionedController",
-          "target": "DeviceProvisionedController",
+          "source": "SDL",
+          "target": "ILibrary",
           "relation": "extended"
-      },
-      {
-          "source": "TestClass",
-          "target": "Haha",
-          "relation": "implemented"
-      },
-      {
-          "source": "CarDeviceProvisionedControllerImpl",
-          "target": "DeviceProvisionedControllerImpl",
-          "relation": "extended"
-      },
-      {
-          "source": "CarDeviceProvisionedControllerImpl",
-          "target": "CarDeviceProvisionedController",
-          "relation": "implemented"
       }
   ]
 }

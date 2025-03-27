@@ -6,6 +6,7 @@ import json
 from typing import List, Optional
 from dataclasses import dataclass, asdict
 
+
 @dataclass
 class ClassData:
     id: str = ""
@@ -16,6 +17,7 @@ class ClassData:
     complexity: Optional[str] = None
     module: Optional[str] = None
 
+
 @dataclass
 class ModuleData:
     id: str = ""
@@ -24,15 +26,18 @@ class ModuleData:
     linesOfCode: Optional[int] = None
     classes: Optional[List[str]] = field(default_factory=list)
 
+
 @dataclass
 class Dependency:
     source: str = ""
     target: str = ""
     relation: str = ""
-    
+
+
 from dataclasses import dataclass, field, asdict
 from typing import List
 import json
+
 
 @dataclass
 class GraphData:
@@ -42,7 +47,8 @@ class GraphData:
     def add_blank_classes(self):
         defined_nodes = {node.id for node in self.nodes}
         referenced_nodes = {link.source for link in self.links}.union(
-                            {link.target for link in self.links})
+            {link.target for link in self.links}
+        )
 
         undefined_nodes = referenced_nodes - defined_nodes
 
@@ -53,11 +59,9 @@ class GraphData:
                 methods=[],
                 linesOfCode=None,
                 complexity=None,
-                module=None
+                module=None,
             )
             self.nodes.append(blank_node)
-
-            
 
     def remove_duplicates(self):
         # Remove duplicate nodes explicitly based on 'id'
@@ -83,7 +87,6 @@ class GraphData:
         self.remove_duplicates()
         self.add_blank_classes()
         return json.dumps(asdict(self), indent=4)
-
 
 
 class DataGenerator:
@@ -118,8 +121,8 @@ class DataGenerator:
 
             self.dumpClass(node)
 
-        #print("\n\n")
-        #print(self.graphData)
+        # print("\n\n")
+        # print(self.graphData)
         json_output = self.graphData.to_json()
 
         filePath = "../out/data_uml.json"
@@ -130,12 +133,18 @@ class DataGenerator:
         classData.id = classInfo.name
 
         # Convert methods explicitly (currently empty, but future-proof)
-        classData.methods = [method.name if hasattr(method, 'name') else str(method) for method in classInfo.methods]
+        classData.methods = [
+            method.name if hasattr(method, "name") else str(method)
+            for method in classInfo.methods
+        ]
 
         # Explicitly handle attributes (variables)
         classData.attributes = [
-            f"{var.accessLevel.name.lower()} {var.dataType} {var.name}".replace(';', '').strip()
-            for var in classInfo.variables if var.dataType not in self.dataTypeToIgnore
+            f"{var.accessLevel.name.lower()} {var.dataType} {var.name}".replace(
+                ";", ""
+            ).strip()
+            for var in classInfo.variables
+            if var.dataType not in self.dataTypeToIgnore
         ]
 
         self.graphData.nodes.append(classData)
@@ -145,12 +154,13 @@ class DataGenerator:
             dependency = Dependency()
             dependency.source = classInfo.name
             dependency.target = self.fix_name_issue(relation.name)
-            dependency.relation = relation.relationship.name.lower()  # Clearly specify relationship type
+            dependency.relation = (
+                relation.relationship.name.lower()
+            )  # Clearly specify relationship type
             self.graphData.links.append(dependency)
 
-
     def writeToFile(self, fileName, json_output):
-        with open(fileName, 'w') as f:
+        with open(fileName, "w") as f:
             f.write(json_output)
 
     def fix_name_issue(self, name):

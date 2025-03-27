@@ -3,6 +3,7 @@ from drawer.ClassUmlDrawer import *
 from PythonUtilityClasses import SystemUtility as SU
 from drawer.DataGenerator import *
 
+
 class FileAnalyzer(AbstractAnalyzer):
     def __init__(self) -> None:
         if not os.path.exists("../out"):
